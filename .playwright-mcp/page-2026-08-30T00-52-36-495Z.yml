@@ -1,0 +1,57 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - paragraph [ref=e5]: N高キャンフェス / FESTA CASINO
+        - heading "運営メニュー" [level=1] [ref=e6]
+      - region "スタッフログイン" [ref=e7]:
+        - strong [ref=e11]: 管理者
+        - button "ログアウト" [ref=e12] [cursor=pointer]
+    - navigation "運営画面切り替え" [ref=e13]:
+      - link "メニュー" [ref=e14] [cursor=pointer]:
+        - /url: /staff
+      - link "受付" [ref=e19] [cursor=pointer]:
+        - /url: /staff/reception
+      - link "コイン交換" [ref=e24] [cursor=pointer]:
+        - /url: /staff/exchange
+      - link "換金所" [ref=e31] [cursor=pointer]:
+        - /url: /staff/cashier
+      - link "管理" [ref=e36] [cursor=pointer]:
+        - /url: /staff/admin
+    - generic [ref=e39]:
+      - generic [ref=e41]:
+        - generic [ref=e42]: OPERATOR CONSOLE
+        - heading "今日の受付・決済をすばやく処理" [level=2] [ref=e43]
+        - paragraph [ref=e44]: 受付でチップを渡し、増やしたチップは規定数でドリンクチケットへ交換できます。ビンゴカードはチップで購入します。
+      - generic [ref=e48]:
+        - article [ref=e49]:
+          - generic [ref=e54]: 参加者数
+          - strong [ref=e55]: 0人
+        - article [ref=e56]:
+          - generic [ref=e62]: 総チップ残高
+          - strong [ref=e63]: 0 CF
+        - article [ref=e64]:
+          - generic [ref=e67]: 無料チケット残数
+          - strong [ref=e68]: 5杯
+        - article [ref=e69]:
+          - generic [ref=e74]: 履歴件数
+          - strong [ref=e75]: 0件
+      - region "運営ページ一覧" [ref=e76]:
+        - link "受付 アカウント作成・QR発行" [ref=e77] [cursor=pointer]:
+          - /url: /staff/reception
+          - generic [ref=e81]: 受付
+          - strong [ref=e82]: アカウント作成・QR発行
+        - link "コイン交換 コインと物理チップの交換" [ref=e83] [cursor=pointer]:
+          - /url: /staff/exchange
+          - generic [ref=e89]: コイン交換
+          - strong [ref=e90]: コインと物理チップの交換
+        - link "換金所 会場特典のQR決済" [ref=e91] [cursor=pointer]:
+          - /url: /staff/cashier
+          - generic [ref=e95]: 換金所
+          - strong [ref=e96]: 会場特典のQR決済
+        - link "管理 集計・履歴・設定" [ref=e97] [cursor=pointer]:
+          - /url: /staff/admin
+          - generic [ref=e99]: 管理
+          - strong [ref=e100]: 集計・履歴・設定
+  - button "Open Next.js Dev Tools" [ref=e106] [cursor=pointer]
+  - alert [ref=e110]

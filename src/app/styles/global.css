@@ -1,0 +1,133 @@
+/*
+ * 1. CSSリセット：全要素の計算方法を統一し、余白をリセットする
+ * これが横はみ出しを防ぐ最も重要な部分です。
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --font-body: "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+}
+
+body, h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+/* 2. アプリケーション全体の基本レイアウトとフォント設定 */
+html {
+  height: 100%;
+  min-height: 100%;
+  /* Global text scale controlled via CSS var */
+  --text-scale: 1;
+  font-size: calc(16px * var(--text-scale));
+  font-family: var(--font-body);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f9fc;
+
+  font-family: var(--font-body);
+  color: #17384b;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 3. 特定のページで使うヘルパークラス */
+.main-content {
+  flex-grow: 1;
+}
+
+/* Global styles for html5-qrcode on participant entry */
+#charge-reader,
+#charge-reader__scan_region {
+  position: relative !important;
+}
+
+#charge-reader video {
+  display: block;
+  width: 100% !important;
+  height: auto;
+}
+
+#charge-reader canvas {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Hide the built-in html5-qrcode dashboard strips */
+#charge-reader__dashboard_section,
+#charge-reader__dashboard_section_csr {
+  display: none !important;
+}
+
+/* お知らせページのアニメーション効果 */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* お知らせページのスクロールバー カスタムスタイル */
+div[style*="overflowY: auto"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+div[style*="overflowY: auto"]::-webkit-scrollbar-track {
+  background: #F8FAFC;
+  border-radius: 3px;
+}
+
+div[style*="overflowY: auto"]::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+div[style*="overflowY: auto"]::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}

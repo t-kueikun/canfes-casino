@@ -1,0 +1,70 @@
+- generic [active] [ref=f6e1]:
+  - main [ref=f6e2]:
+    - generic [ref=f6e4]:
+      - paragraph [ref=f6e5]: N高キャンフェス / FESTA CASINO
+      - heading "ビンゴカード" [level=1] [ref=f6e6]
+    - generic [ref=f6e8]:
+      - generic [ref=f6e9]:
+        - generic [ref=f6e10]: N HIGH FESTIVAL / BINGO
+        - heading "あなたのビンゴカード" [level=2] [ref=f6e11]
+        - paragraph [ref=f6e12]: 1枚のカードを持っています。呼ばれた番号をタップしてチェックしてください。
+      - article [ref=f6e13]:
+        - generic [ref=f6e14]:
+          - generic [ref=f6e15]:
+            - generic [ref=f6e16]: カード 1
+            - strong [ref=f6e17]: 0 / 24
+          - generic "ビンゴカード切り替え" [ref=f6e18]:
+            - button "前のビンゴカード" [disabled] [ref=f6e19]: ←
+            - generic [ref=f6e20]: 1 / 1
+            - button "次のビンゴカード" [disabled] [ref=f6e21]: →
+        - generic "ビンゴカード1" [ref=f6e24]:
+          - strong [ref=f6e25]: B
+          - strong [ref=f6e26]: I
+          - strong [ref=f6e27]: "N"
+          - strong [ref=f6e28]: G
+          - strong [ref=f6e29]: O
+          - button "8" [ref=f6e30] [cursor=pointer]
+          - button "22" [ref=f6e31] [cursor=pointer]
+          - button "34" [ref=f6e32] [cursor=pointer]
+          - button "53" [ref=f6e33] [cursor=pointer]
+          - button "74" [ref=f6e34] [cursor=pointer]
+          - button "7" [ref=f6e35] [cursor=pointer]
+          - button "16" [ref=f6e36] [cursor=pointer]
+          - button "31" [ref=f6e37] [cursor=pointer]
+          - button "60" [ref=f6e38] [cursor=pointer]
+          - button "67" [ref=f6e39] [cursor=pointer]
+          - button "11" [ref=f6e40] [cursor=pointer]
+          - button "25" [ref=f6e41] [cursor=pointer]
+          - button "FREE" [disabled] [ref=f6e42]
+          - button "54" [ref=f6e43] [cursor=pointer]
+          - button "62" [ref=f6e44] [cursor=pointer]
+          - button "10" [ref=f6e45] [cursor=pointer]
+          - button "20" [ref=f6e46] [cursor=pointer]
+          - button "40" [ref=f6e47] [cursor=pointer]
+          - button "56" [ref=f6e48] [cursor=pointer]
+          - button "69" [ref=f6e49] [cursor=pointer]
+          - button "2" [ref=f6e50] [cursor=pointer]
+          - button "21" [ref=f6e51] [cursor=pointer]
+          - button "39" [ref=f6e52] [cursor=pointer]
+          - button "48" [ref=f6e53] [cursor=pointer]
+          - button "72" [ref=f6e54] [cursor=pointer]
+        - paragraph [ref=f6e55]: カードはこの端末に保存されます。番号が呼ばれたら、忘れずにチェックしましょう。
+      - article [ref=f6e56]:
+        - generic [ref=f6e57]:
+          - generic [ref=f6e58]: もう1枚追加する
+          - strong [ref=f6e59]: 100 チップ
+        - button "カードを追加購入" [ref=f6e60] [cursor=pointer]
+    - generic [ref=f6e63]:
+      - navigation "参加者ナビゲーション" [ref=f6e64]:
+        - link "ホーム" [ref=f6e65] [cursor=pointer]:
+          - /url: /user?participant=qr_mtf3upf5_k4p47p
+        - link "履歴" [ref=f6e70] [cursor=pointer]:
+          - /url: /user/history?participant=qr_mtf3upf5_k4p47p
+        - link "ビンゴ" [ref=f6e77] [cursor=pointer]:
+          - /url: /user/bingo?participant=qr_mtf3upf5_k4p47p
+        - link "特典" [ref=f6e81] [cursor=pointer]:
+          - /url: /user/tickets?participant=qr_mtf3upf5_k4p47p
+      - link "支払う" [ref=f6e86] [cursor=pointer]:
+        - /url: /user/pay?participant=qr_mtf3upf5_k4p47p
+  - button "Open Next.js Dev Tools" [ref=f6e98] [cursor=pointer]
+  - alert [ref=f6e102]

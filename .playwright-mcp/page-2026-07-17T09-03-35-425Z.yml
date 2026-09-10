@@ -1,0 +1,35 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: 爆裂カジノ / 爆金
+      - heading "クレジット・チケット管理" [level=1] [ref=e6]
+    - region "スタッフログイン" [ref=e7]:
+      - textbox "PIN" [ref=e11]
+      - button "ログイン" [ref=e12]
+  - navigation "画面切り替え" [ref=e16]:
+    - button "参加者" [ref=e17]
+    - button "受付" [disabled] [ref=e24]
+    - button "チップ交換" [disabled] [ref=e28]
+    - button "換金所" [disabled] [ref=e34]
+    - button "管理" [disabled] [ref=e39]
+  - generic [ref=e42]:
+    - article [ref=e43]:
+      - heading "新規参加者登録" [level=2] [ref=e48]
+      - generic [ref=e49]:
+        - text: 表示名
+        - textbox "表示名" [ref=e50]:
+          - /placeholder: "例: 2年A組 佐藤"
+      - generic [ref=e51]:
+        - checkbox "8月レポート提出済みボーナスを付与" [ref=e52]
+        - text: 8月レポート提出済みボーナスを付与
+      - generic [ref=e53]:
+        - generic [ref=e54]: 初期 300 cr
+        - generic [ref=e55]: ボーナス 100 cr
+      - button "アカウント作成・QR発行" [disabled] [ref=e56]
+    - article [ref=e58]:
+      - heading "参加者検索" [level=2] [ref=e65]
+      - generic [ref=e66]:
+        - text: 名前・QR検索
+        - textbox "名前・QR検索" [ref=e71]:
+          - /placeholder: 名前またはQRトークン
+      - paragraph [ref=e72]: 該当する参加者はいません

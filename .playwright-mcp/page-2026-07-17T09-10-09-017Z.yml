@@ -1,0 +1,22 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: 爆裂カジノ / 爆金
+      - heading "画面を選択" [level=1] [ref=e6]
+    - generic [ref=e7]:
+      - link "参加者画面 残高確認・決済QR" [ref=e8] [cursor=pointer]:
+        - /url: /user
+        - generic [ref=e15]: 参加者画面
+        - strong [ref=e16]: 残高確認・決済QR
+      - link "運営画面 受付・チップ交換・換金所・管理" [ref=e17] [cursor=pointer]:
+        - /url: /staff
+        - generic [ref=e21]: 運営画面
+        - strong [ref=e22]: 受付・チップ交換・換金所・管理
+    - generic [ref=e23]:
+      - heading "運用フロー" [level=2] [ref=e30]
+      - generic [ref=e31]:
+        - generic [ref=e32]: 受付でアカウント作成
+        - generic [ref=e33]: クレジットを物理チップへ交換
+        - generic [ref=e34]: チップをクレジットへ戻す
+        - generic [ref=e35]: 換金所でQR決済
+  - alert [ref=e36]

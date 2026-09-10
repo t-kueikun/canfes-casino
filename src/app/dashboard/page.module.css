@@ -1,0 +1,704 @@
+/* app/dashboard/page.module.css */
+
+.pageContainer {
+  background-color: #f7f9fc;
+  min-height: 100vh;
+}
+
+.mainContent {
+  padding: 1rem;
+  padding-bottom: 200px; /* フッターの高さ分 */
+}
+
+/* --- ヘッダー --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.logoutButton {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.logoutButton:hover {
+  background-color: #dee2e6;
+}
+
+/* --- 残高表示カード用のスタイル --- */
+
+/* カード全体を中央に配置するコンテナ */
+.balanceContainer {
+  position: relative; /* 子要素をabsolute配置するための基準 */
+  max-width: 350px;
+  height: 280px; /* 全体の高さを確保 */
+  margin: 1.25rem auto; /* ページ内での中央配置 */
+}
+
+/* 白いカードのスタイル */
+.balanceDisplayCard {
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  width: 79%; /* 青いカードより少し小さく */
+  height: 150px;
+
+  /* --- 配置 --- */
+  position: absolute;
+  top: 30px; /* 青いカードの上に配置 */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10; /* 青いカードより手前に表示 */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+/* ロゴを左下に配置するためのラッパー */
+.logoWrapper {
+  position: absolute;
+  bottom: 0.8rem;
+  left: 1.2rem;
+}
+
+.balanceTitle {
+  color: #333;
+  font-size: clamp(1rem, 4.8vw, 1.5rem);
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: -0.04em;
+}
+
+.balanceAmount {
+  color: #000;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+/* 青いカードのスタイル */
+.balanceActions {
+  background-color: #00A9E0;
+  color: white;
+  border-radius: 32px;
+  width: 100%;
+  height: 130px;
+
+  /* --- 配置 --- */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 5; /* 白いカードより奥に表示 */
+
+  /* --- 内部のボタン配置 --- */
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end; /* ボタンを下に配置 */
+  padding-bottom: 1.5rem;
+  box-sizing: border-box; /* paddingを含めた高さ計算に */
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex: 1; /* スペースを均等に分ける */
+}
+
+.actionButton:hover {
+  opacity: 0.8;
+}
+
+.actionIcon {
+  filter: brightness(0) invert(1);
+}
+
+/* --- フッター --- */
+.footerContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem 1rem 1rem;
+  z-index: 50; /* 通知よりも手前に表示 */
+}
+
+.requestsCard {
+  margin: 2rem auto 0;
+  background: linear-gradient(135deg, #f7fbff 0%, #ffffff 100%);
+  border-radius: 16px;
+  box-shadow: 0px 8px 16px rgba(15, 23, 42, 0.06);
+  padding: 1.25rem;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.historyContainer {
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.historyHeaderBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.historyHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.historyBackButton {
+  border: none;
+  background: #f1f5f9;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.historyTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.historyRefreshButton {
+  border: none;
+  background: #111827;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.scanReader {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #0f172a;
+}
+
+.historyTabs {
+  display: flex;
+  gap: 0.75rem;
+  background: #eef2ff;
+  border-radius: 999px;
+  padding: 4px;
+  width: fit-content;
+}
+
+.historyTab {
+  border: none;
+  background: transparent;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.historyTabActive {
+  background: #ffffff;
+  color: #111827;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(148, 163, 184, 0.25);
+}
+
+.requestsHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  min-height: 2.5rem;
+}
+
+.requestsBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.requestsTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.requestsCopy {
+  font-size: 0.95rem;
+  color: #475467;
+  line-height: 1.6;
+}
+
+.requestsList {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.notificationsWrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.notificationsHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.notificationsTitle {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.notificationsList {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.announcementCard {
+  margin: 1.5rem auto 0;
+  background: #ffffff;
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  border-radius: 18px;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+  padding: 1.4rem;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.announcementCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(59, 130, 246, 0.05));
+  pointer-events: none;
+}
+
+.announcementHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.announcementPill {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.12);
+  color: #0369a1;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.announcementTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: #0f172a;
+}
+
+.announcementBody {
+  position: relative;
+  z-index: 1;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #1f2937;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 4.95rem;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+
+.announcementCard-update  .announcementBody{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+
+.announcementConversion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.12), rgba(59, 130, 246, 0.08));
+  border: 1px solid rgba(14, 165, 233, 0.18);
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.announcementConversionValue {
+  background: #ffffff;
+  padding: 0.55rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 116, 233, 0.25);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  min-width: 80px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.announcementConversionArrow {
+  font-size: 1.4rem;
+  color: #0ea5e9;
+}
+
+.announcementToggle {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(14, 165, 233, 0.35);
+  background: #f0f9ff;
+  color: #0369a1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.announcementToggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(14, 165, 233, 0.25);
+}
+
+.announcementList {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.announcementItem {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  color: #1f2937;
+}
+
+.announcementIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.announcementFooter {
+  position: relative;
+  z-index: 1;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.notificationsBackButton {
+  align-self: center;
+  padding: 0.55rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(14, 165, 233, 0.35);
+  background: #f0f9ff;
+  color: #0369a1;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.notificationsBackButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0px 8px 16px rgba(14, 165, 233, 0.2);
+}
+
+.notificationsGroup {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.requestsList li + li {
+  margin-top: 0.3rem;
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.historyActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.historyActionButton {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 11px;
+  line-height: 1.1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.historyActionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.historyLinkButton {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  background: #0099D9;
+  color: #ffffff;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.historyLinkButton:hover,
+.historyActionButton:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+.historyCardBackButton {
+  border: none;
+  background: #f1f5f9;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+.historySummaryRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.historySummaryLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.historySummaryHint {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.historyState {
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+  padding: 0.75rem 0;
+}
+
+.eyebrow {
+  margin-bottom: 0.3rem;
+  color: #0099d9;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.historyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid #eef2f7;
+  padding: 0.8rem 0;
+  color: #334155;
+  font-size: 0.88rem;
+}
+
+.amountPositive { color: #009688; }
+.amountNegative { color: #e53935; }
+
+.historySections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.historySection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historySectionTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.historyList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.historyCardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.historyCardLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.historyAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.historyCardInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.historyCardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.historyCardSubtitle {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.historyCardMeta {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.2;
+}
+
+.historyCardRight {
+  text-align: right;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.historyCardAmountWrapper {
+  max-width: 110px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.historyCardAmount {
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  color: #111827;
+}

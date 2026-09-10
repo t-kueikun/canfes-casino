@@ -1,0 +1,44 @@
+.footer {
+  width: 100%;
+  padding: 1.5rem 1rem; /* 上下の余白を多めに確保 */
+  border-top: 1px solid #e5e7eb; /* тонкая верхняя граница (Tailwindのgray-200相当) */
+  background-color: #f7f9fc;
+
+  /* Flexboxで中央揃え */
+  display: flex;
+  flex-direction: column; /* 要素を縦に並べる */
+  align-items: center;    /* 水平方向の中央揃え */
+  gap: 1.25rem;           /* 各要素間のスペース */
+}
+
+.navLinks {
+  display: flex;
+  gap: 1.0rem; /* リンク間のスペース */
+  font-size: 0.875rem; /* 14px */
+}
+
+.navLinks a {
+  color: #4b5563; /* 少し濃いグレー (Tailwindのgray-600相当) */
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.navLinks a:hover {
+  text-decoration: underline;
+  color: #000000; /* ホバー時に濃い色に (Tailwindのgray-900相当) */
+}
+
+.copyright {
+  font-size: 0.875rem; /* 14px */
+  color: #6b7280; /* やや薄いグレー (Tailwindのgray-500相当) */
+}
+.contactLink {
+  color: #4b5563; /* 少し濃いグレー (Tailwindのgray-600相当) */
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+  color: #000000; /* ホバー時に濃い色に */
+}

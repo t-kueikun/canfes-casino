@@ -1,0 +1,127 @@
+/* components/BottomNavigationBar/BottomNavigationBar.module.css */
+
+/* コンテナ全体：高さ82pxを確保 */
+.navContainer {
+  position: relative;
+  width: min(100%, 406px);
+  max-width: 406px;
+  height: 82px; /* ★指定された全体の高さ */
+  margin: 20px auto;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.navContainerLiquid {
+  width: 100%;
+  max-width: none;
+  padding: 0 24px;
+}
+
+/* ナビゲーションバー本体 */
+.navBar {
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  right: 8px;
+  height: 64px; /* バー自体の高さ */
+  background-color: #ffffff;
+  border-radius: 32px;
+  box-shadow: 0px -2px 16px rgba(0, 0, 0, 0.07);
+
+  display: flex;
+  justify-content: space-around; /* 左右のアイテムを均等に配置 */
+  align-items: center;
+  padding: 0 20px;
+}
+
+.navContainerLiquid .navBar {
+  left: 24px;
+  right: 24px;
+}
+
+.spacer { width: 84px; height: 1px; }
+
+/* ★★★★★ 凹んだ部分（ノッチ）を作成する疑似要素 ★★★★★ */
+.navBar::before {
+  content: '';
+  position: absolute;
+  top: -18px; /* 82px - 64px = 18px 上にはみ出す */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 84px; /* FABより少し大きく */
+  height: 42px; /* 半円 */
+  border-radius: 42px 42px 0 0;
+
+  /* ★ページの背景色と一致させること */
+  background-color: #f7f9fc;
+  box-shadow: 0 -1px 0 0 #f0f2f5;
+}
+
+.navContainerLiquid .navBar::before {
+  width: 90px;
+}
+
+/* 中央のフローティングアクションボタン (FAB) */
+.fab {
+  position: absolute;
+  top: 6px; /* 82px - 64px = 18px 上にはみ出す */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10; /* navBarより手前に表示 */
+ 
+  width: 74px;
+  height: 74px;
+  background-color: #00A9E0; /* PayPay風の青色 */
+  border-radius: 50%;
+  border: 4px solid #ffffff; /* ページの背景色で縁取り、切り抜いた感を強調 */
+  cursor: pointer;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.navContainerLiquid .fab {
+  left: 50%;
+}
+
+.fabIcon {
+  /* SVGが黒の場合、白に変更するテクニック */
+  filter: brightness(0) invert(1);
+}
+
+/* ナビゲーションアイテム（左右のアイコン＋テキスト） */
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px; /* アイコンとテキストの間隔 */
+  text-decoration: none;
+  font-size: 12px;
+  color: #333333; /* デフォルトの文字色（黒） */
+  width: 80px; /* クリック領域を確保 */
+}
+
+/* アクティブな状態のアイテム（ホーム） */
+.activeNavItem { color: #0099D9; }
+
+.navIcon { transition: filter 0.2s ease; }
+.activeIcon {
+  /* Approximate brand #0099D9 from black icon */
+  filter: invert(48%) sepia(86%) saturate(1030%) hue-rotate(162deg) brightness(94%) contrast(101%);
+}
+
+.fabActive { background-color: #0099D9; }
+
+/* アイコンの色をテキストの色に合わせる */
+.navItem img {
+  /* currentColorを使うためにSVGファイルを編集するか、
+     アクティブ状態用の別アイコンを用意するのが一般的です。
+     ここではHome Icon.svgが元々青色であることを想定しています。*/
+}

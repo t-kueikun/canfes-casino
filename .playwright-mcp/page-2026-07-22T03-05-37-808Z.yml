@@ -1,0 +1,59 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: 爆裂カジノ / 爆金
+      - heading "参加者画面" [level=1] [ref=e6]
+    - link "運営画面へ" [ref=e7] [cursor=pointer]:
+      - /url: /staff
+  - generic [ref=e8]:
+    - article "参加者残高" [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]: アプリ内残高
+        - strong [ref=e12]: "--- cr"
+        - generic [ref=e13]: 参加者未選択
+      - generic [ref=e14]:
+        - generic [ref=e15]: チップ交換
+        - generic [ref=e22]: チケット
+    - article [ref=e26]:
+      - heading "支払いQR" [level=2] [ref=e34]
+      - generic [ref=e35]:
+        - text: QRトークン検索
+        - textbox "QRトークン検索" [ref=e40]:
+          - /placeholder: QRトークンを入力
+      - paragraph [ref=e41]: 参加者がまだ登録されていません
+    - article [ref=e42]:
+      - heading "ドリンクチケット" [level=2] [ref=e46]
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - strong [ref=e50]: ドリンク50円引きチケット
+            - generic [ref=e51]: 600cr
+          - generic [ref=e52]: 50円引き
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - strong [ref=e56]: ドリンク100円引きチケット
+            - generic [ref=e57]: 1,000cr
+          - generic [ref=e58]: 100円引き
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - strong [ref=e62]: ドリンク150円引きチケット
+            - generic [ref=e63]: 1,500cr
+          - generic [ref=e64]: 150円引き
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - strong [ref=e68]: ドリンク無料チケット
+            - generic [ref=e69]: 2,000cr
+          - generic [ref=e70]: 残り 5杯
+      - generic [ref=e72]:
+        - heading "ドリンクチケット決済履歴" [level=3] [ref=e73]
+        - paragraph [ref=e74]: 交換履歴はありません
+        - heading "クレジット履歴" [level=3] [ref=e75]
+        - paragraph [ref=e76]: 履歴はありません
+  - generic [ref=e77]:
+    - navigation "参加者ナビゲーション" [ref=e78]:
+      - link "ホーム" [ref=e79] [cursor=pointer]:
+        - /url: /user
+      - link "運営" [ref=e86] [cursor=pointer]:
+        - /url: /staff
+    - link "支払う" [ref=e93] [cursor=pointer]:
+      - /url: "#payment-qr"

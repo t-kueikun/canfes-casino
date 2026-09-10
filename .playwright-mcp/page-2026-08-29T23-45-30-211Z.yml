@@ -1,0 +1,9 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: N高キャンフェス / FESTA CASINO
+      - heading "マイチップ" [level=1] [ref=e6]
+    - article [ref=e8]:
+      - paragraph [ref=e9]: アカウントを確認しています
+  - button "Open Next.js Dev Tools" [ref=e15] [cursor=pointer]
+  - alert [ref=e19]

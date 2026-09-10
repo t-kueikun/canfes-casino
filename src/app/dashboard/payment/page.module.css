@@ -1,0 +1,345 @@
+.paymentContainer {
+  min-height: 100vh;
+  background: #0099D9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paymentCard {
+  padding: 2rem;
+  border-radius: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  background: white;
+}
+
+.modeSwitch {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.modeButton {
+  border: 1.5px solid #d0d5dd;
+  border-radius: 999px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modeButtonActive {
+  background-color: #0099D9;
+  border-color: #0099D9;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 153, 217, 0.25);
+}
+
+.currency {
+  font-size: 1.4rem;
+  margin-left: 0.35rem;
+}
+
+.keypadWrapper {
+  background: white;
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
+.amountDisplay {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #0099D9;
+  background: none;
+  margin-bottom: 1rem;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.key {
+  padding: 1.5rem 1rem;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 1.5rem;
+  background: #f3f3f3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.key:hover {
+  background: #e1e1e1;
+}
+
+.nextButton {
+  margin-top: 1rem;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 1rem;
+  background: #F36169;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.nextButton:hover {
+  background: #E34C53;
+}
+
+.secondaryButton {
+  border: 1.5px solid #d0d5dd;
+  background: #ffffff;
+  color: #0f172a;
+  font-weight: 600;
+  padding: 0.9rem 1.4rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.secondaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primaryButton {
+  margin-top: 0.5rem;
+  padding: 0.9rem 1.4rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 1rem;
+  background: #F36169;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: #E34C53;
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.qrResult {
+  text-align: center;
+}
+
+.qrContainer {
+  display: inline-block;
+  padding: 1rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.generatedAmount {
+  font-weight: bold;
+  color: #333;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.75rem;
+}
+
+.qrActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.warning {
+  margin-top: 1rem;
+  color: #e53935;
+  font-weight: 600;
+}
+
+/* お知らせカードのスタイル */
+.requestsCard {
+  margin: 2rem auto 0;
+  background: linear-gradient(135deg, #f7fbff 0%, #ffffff 100%);
+  border-radius: 24px;
+  box-shadow: 0px 18px 36px rgba(15, 23, 42, 0.08);
+  padding: 1.5rem;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.requestsHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.requestsBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.requestsTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.requestsCopy {
+  font-size: 0.95rem;
+  color: #475467;
+  line-height: 1.6;
+}
+
+.requestsList {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.requestsList li + li {
+  margin-top: 0.3rem;
+}
+
+.scanContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.scanStatus {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #f1f5f9;
+  border-radius: 0.75rem;
+  padding: 0.9rem 1rem;
+}
+
+.scanReader {
+  width: 100%;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  background: #111827;
+}
+
+.scanManual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+}
+
+.scanManualLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475467;
+}
+
+.scanManualRow {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.scanManualInput {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border-radius: 0.9rem;
+  border: 1.5px solid #d0d5dd;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.scanInfo {
+  font-size: 0.8rem;
+  color: #6b7280;
+  word-break: break-all;
+}
+
+.scanSuccess {
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  font-size: 0.9rem;
+  border-radius: 0.9rem;
+  padding: 0.9rem 1rem;
+  text-align: left;
+}
+
+.scanActions {
+  display: flex;
+  justify-content: center;
+}
+
+.pendingCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pendingTitle {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pendingSummary {
+  font-size: 0.9rem;
+  color: #475467;
+  line-height: 1.5;
+}
+
+.pendingInput {
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #d0d5dd;
+  border-radius: 0.9rem;
+  font-size: 1rem;
+  text-align: right;
+  letter-spacing: 0.06em;
+}
+
+.pendingButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}

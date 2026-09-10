@@ -1,0 +1,70 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: N高キャンフェス / FESTA CASINO
+      - heading "マイチップ" [level=1] [ref=e6]
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: N HIGH FESTIVAL 2026
+          - heading "こんにちは、テスト参加者さん" [level=2] [ref=e11]
+          - paragraph [ref=e12]: 学籍番号 0000
+        - generic [ref=e13]:
+          - generic "アカウント接続中" [ref=e14]: 接続中
+          - button "切り替え" [ref=e16] [cursor=pointer]
+      - article "参加者残高" [ref=e17]:
+        - generic [ref=e18]: いま使えるカジノチップ
+        - strong [ref=e23]: 1,200 CF
+        - paragraph [ref=e24]: ポーカー・ルーレット・ビンゴで使えるチップ残高です
+      - region [ref=e25]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: CASINO BOOTH
+          - heading "ゲームを選んで遊ぶ" [level=2] [ref=e29]
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - strong [ref=e35]: POKER
+            - generic [ref=e36]: 読み合いを楽しむマインドスポーツ
+          - generic [ref=e37]:
+            - strong [ref=e38]: ROULETTE
+            - generic [ref=e39]: 数字にチップを置くカジノの定番
+          - generic [ref=e40]:
+            - strong [ref=e41]: BINGO
+            - generic [ref=e42]: 運と盛り上がりをみんなで体験
+        - paragraph [ref=e43]: ポーカーやルーレットは各テーブルで楽しみ、ビンゴはカードを購入して参加します。増やしたチップはドリンクチケットと交換できます。
+      - generic "参加者メニュー" [ref=e44]:
+        - link "支払いQRを表示 金額を入力してスタッフに提示" [ref=e45] [cursor=pointer]:
+          - /url: /user/pay?participant=qr_visual
+          - generic [ref=e52]:
+            - strong [ref=e53]: 支払いQRを表示
+            - generic [ref=e54]: 金額を入力してスタッフに提示
+        - link "ドリンクチケットを見る 規定チップと景品を交換" [ref=e57] [cursor=pointer]:
+          - /url: /user/tickets?participant=qr_visual
+          - generic [ref=e61]:
+            - strong [ref=e62]: ドリンクチケットを見る
+            - generic [ref=e63]: 規定チップと景品を交換
+        - link "ビンゴカードを買う チップで購入して参加" [ref=e66] [cursor=pointer]:
+          - /url: /user/bingo?participant=qr_visual
+          - generic [ref=e70]:
+            - strong [ref=e71]: ビンゴカードを買う
+            - generic [ref=e72]: チップで購入して参加
+      - article [ref=e75]:
+        - generic [ref=e77]:
+          - generic [ref=e78]: ACTIVITY
+          - heading "最近の利用履歴" [level=2] [ref=e79]
+        - paragraph [ref=e84]: 履歴はありません
+        - link "すべての履歴を見る" [ref=e85] [cursor=pointer]:
+          - /url: /user/history?participant=qr_visual
+    - generic [ref=e88]:
+      - navigation "参加者ナビゲーション" [ref=e89]:
+        - link "ホーム" [ref=e90] [cursor=pointer]:
+          - /url: /user?participant=qr_visual
+        - link "履歴" [ref=e95] [cursor=pointer]:
+          - /url: /user/history?participant=qr_visual
+        - link "ビンゴ" [ref=e102] [cursor=pointer]:
+          - /url: /user/bingo?participant=qr_visual
+        - link "特典" [ref=e106] [cursor=pointer]:
+          - /url: /user/tickets?participant=qr_visual
+      - link "支払う" [ref=e111] [cursor=pointer]:
+        - /url: /user/pay?participant=qr_visual
+  - button "Open Next.js Dev Tools" [ref=e123] [cursor=pointer]
+  - alert [ref=e127]

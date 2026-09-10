@@ -1,0 +1,20 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: N高キャンフェス / FESTA CASINO
+      - heading "マイチップ" [level=1] [ref=e6]
+    - article [ref=e8]:
+      - generic [ref=e9]: N HIGH FESTIVAL / LOGIN
+      - generic [ref=e17]:
+        - heading "参加者QRを読み取ってください" [level=2] [ref=e18]
+        - paragraph [ref=e19]: 受付で名前と学籍番号を登録すると、あなた専用の参加者QRが表示されます。
+      - generic "ログイン手順" [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: "1"
+          - text: 受付で参加者QRを表示
+        - generic [ref=e23]:
+          - generic [ref=e24]: "2"
+          - text: カメラで読み取り
+      - button "QRを読み込む" [ref=e25] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e34] [cursor=pointer]
+  - alert [ref=e38]

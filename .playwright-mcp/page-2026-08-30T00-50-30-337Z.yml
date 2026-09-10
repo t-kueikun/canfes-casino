@@ -1,0 +1,57 @@
+- generic [ref=f3e1]:
+  - main [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - generic [ref=f3e4]:
+        - paragraph [ref=f3e5]: N高キャンフェス / FESTA CASINO
+        - heading "運営メニュー" [level=1] [ref=f3e6]
+      - region "スタッフログイン" [ref=f3e7]:
+        - strong [ref=f3e34]: 管理者
+        - button "ログアウト" [active] [ref=f3e35] [cursor=pointer]
+    - navigation "運営画面切り替え" [ref=f3e36]:
+      - link "メニュー" [ref=f3e37] [cursor=pointer]:
+        - /url: /staff
+      - link "受付" [ref=f3e42] [cursor=pointer]:
+        - /url: /staff/reception
+      - link "コイン交換" [ref=f3e47] [cursor=pointer]:
+        - /url: /staff/exchange
+      - link "換金所" [ref=f3e54] [cursor=pointer]:
+        - /url: /staff/cashier
+      - link "管理" [ref=f3e59] [cursor=pointer]:
+        - /url: /staff/admin
+    - generic [ref=f3e62]:
+      - generic [ref=f3e64]:
+        - generic [ref=f3e65]: OPERATOR CONSOLE
+        - heading "今日の受付・決済をすばやく処理" [level=2] [ref=f3e66]
+        - paragraph [ref=f3e67]: 受付でチップを渡し、増やしたチップは規定数でドリンクチケットへ交換できます。ビンゴカードはチップで購入します。
+      - generic [ref=f3e71]:
+        - article [ref=f3e72]:
+          - generic [ref=f3e77]: 参加者数
+          - strong [ref=f3e78]: 0人
+        - article [ref=f3e79]:
+          - generic [ref=f3e85]: 総チップ残高
+          - strong [ref=f3e86]: 0 CF
+        - article [ref=f3e87]:
+          - generic [ref=f3e90]: 無料チケット残数
+          - strong [ref=f3e91]: 5杯
+        - article [ref=f3e92]:
+          - generic [ref=f3e97]: 履歴件数
+          - strong [ref=f3e98]: 0件
+      - region "運営ページ一覧" [ref=f3e99]:
+        - link "受付 アカウント作成・QR発行" [ref=f3e100] [cursor=pointer]:
+          - /url: /staff/reception
+          - generic [ref=f3e104]: 受付
+          - strong [ref=f3e105]: アカウント作成・QR発行
+        - link "コイン交換 コインと物理チップの交換" [ref=f3e106] [cursor=pointer]:
+          - /url: /staff/exchange
+          - generic [ref=f3e112]: コイン交換
+          - strong [ref=f3e113]: コインと物理チップの交換
+        - link "換金所 会場特典のQR決済" [ref=f3e114] [cursor=pointer]:
+          - /url: /staff/cashier
+          - generic [ref=f3e118]: 換金所
+          - strong [ref=f3e119]: 会場特典のQR決済
+        - link "管理 集計・履歴・設定" [ref=f3e120] [cursor=pointer]:
+          - /url: /staff/admin
+          - generic [ref=f3e122]: 管理
+          - strong [ref=f3e123]: 集計・履歴・設定
+  - button "Open Next.js Dev Tools" [ref=f3e29] [cursor=pointer]
+  - alert [ref=f3e33]

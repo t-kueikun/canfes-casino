@@ -1,0 +1,13 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - paragraph [ref=e5]: 爆裂カジノ / 爆金
+        - heading "運営画面" [level=1] [ref=e6]
+      - region "スタッフログイン" [ref=e7]:
+        - textbox "PIN" [ref=e11]
+        - button "ログイン" [ref=e12] [cursor=pointer]
+    - article [ref=e17]:
+      - heading "スタッフPINでログイン" [level=2] [ref=e22]
+      - paragraph [ref=e23]: 受付、チップ交換、換金所、管理画面は運営スタッフ専用です。右上のPIN入力からログインしてください。
+  - alert [ref=e24]

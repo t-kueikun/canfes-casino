@@ -1,0 +1,12 @@
+- main [ref=f3e2]:
+  - generic [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - paragraph [ref=f3e5]: N高キャンフェス / FESTA CASINO
+      - heading "運営メニュー" [level=1] [ref=f3e6]
+    - region "スタッフログイン" [ref=f3e7]:
+      - textbox "スタッフPIN" [ref=f3e11]:
+        - /placeholder: PIN
+      - button "ログイン" [ref=f3e12] [cursor=pointer]
+  - article [ref=f3e17]:
+    - heading "スタッフPINでログイン" [level=2] [ref=f3e22]
+    - paragraph [ref=f3e23]: 受付、コイン交換、決済、管理画面は運営スタッフ専用です。右上のPIN入力からログインしてください。
