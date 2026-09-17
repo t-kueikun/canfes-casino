@@ -1,8 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { resolveGuestAccount } from "@/lib/guestSession";
-import { getAppUrl } from "@/lib/appUrl";
-import { createQrToken } from "@/lib/qrToken";
+import { getSupabaseServiceClient } from "@/lib/supabaseRoute";
 
 export const dynamic = "force-dynamic";
 
@@ -17,15 +16,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "金額は1〜100,000 CFの整数で入力してください" }, { status: 400 });
   }
 
-  const token = createQrToken({
-    type: "payment",
-    requestId: randomUUID(),
-    accountId: account.id,
+  const admin = getSupabaseServiceClient() as any;
+  const { data, error } = await admin.rpc("apply_canfes_payment_request", {
+    p_request_id: randomUUID(),
+    p_account_id: account.id,
+    p_amount: amount,
+    p_mode: mode,
+  });
+
+  if (error) {
+    const message = String(error.message ?? "");
+    if (message.includes("insufficient_balance")) {
+      return NextResponse.json({ error: "残高が不足しているため払い戻しできません" }, { status: 409 });
+    }
+    if (message.includes("account_not_active")) {
+      return NextResponse.json({ error: "参加者アカウントが見つかりません" }, { status: 404 });
+    }
+    return NextResponse.json({ error: "支払いを確定できませんでした。少し待ってからもう一度お試しください" }, { status: 500 });
+  }
+
+  const result = Array.isArray(data) ? data[0] : data;
+  if (!result) return NextResponse.json({ error: "支払い結果を確認できませんでした" }, { status: 500 });
+
+  return NextResponse.json({
+    completed: true,
+    balance: Number(result.resulting_balance),
     amount,
     mode,
-    expiresAt: Math.floor(Date.now() / 1000) + 5 * 60,
+    display_name: result.display_name,
   });
-  const url = new URL("/operator/payments/confirm", getAppUrl(request));
-  url.searchParams.set("token", token);
-  return NextResponse.json({ qr_url: url.toString(), expires_in_seconds: 300 });
 }
