@@ -247,7 +247,8 @@ export default function OperatorPage() {
           </div>
           <div className={styles.heroLinks}>
             <Link href="/operator/scan">QRを読み取る</Link>
-            <Link href="/operator/payments">購入・払戻しQRを表示</Link>
+            <Link href="/operator/payments">チップ購入QRを表示</Link>
+            <Link href="/operator/payments/refund">チップ払い戻しQRを発行</Link>
           </div>
         </section>
 
