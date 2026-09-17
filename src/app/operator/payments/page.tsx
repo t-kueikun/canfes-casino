@@ -18,8 +18,9 @@ export default function OperatorPaymentsPage() {
     });
   }, [router]);
 
-  const purchaseUrl = baseUrl ? `${baseUrl}/dashboard/payment?mode=purchase` : "";
-  const refundUrl = baseUrl ? `${baseUrl}/dashboard/payment?mode=refund` : "";
+  const qrBaseUrl = (process.env.NEXT_PUBLIC_CANFES_APP_URL?.trim().replace(/\/+$/, "") || baseUrl);
+  const purchaseUrl = qrBaseUrl ? `${qrBaseUrl}/dashboard/payment?mode=purchase` : "";
+  const refundUrl = qrBaseUrl ? `${qrBaseUrl}/dashboard/payment?mode=refund` : "";
 
   return (
     <div className={styles.page}>

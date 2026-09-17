@@ -57,7 +57,10 @@ export default function DashboardScanPage() {
     let target = "";
     try {
       const url = new URL(raw.trim(), window.location.origin);
-      if (url.origin === window.location.origin && url.pathname === "/dashboard/payment") {
+      // QR can be displayed on a different host (for example production QR
+      // scanned from a local preview). Only the route and mode matter here;
+      // always open the payment page on the host currently running the app.
+      if (url.pathname.replace(/\/$/, "") === "/dashboard/payment") {
         const mode = url.searchParams.get("mode");
         if (mode === "purchase" || mode === "refund") target = `/dashboard/payment?mode=${mode}`;
       }
