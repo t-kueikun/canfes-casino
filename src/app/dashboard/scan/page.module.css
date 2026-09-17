@@ -8,11 +8,10 @@
 .copy { margin: 12px 0 20px; color: #6b808c; font-size: 13px; line-height: 1.7; }
 .reader { overflow: hidden; min-height: 0; border-radius: 14px; }
 .reader :global(video) { border-radius: 14px; }
-.primaryButton, .secondaryButton, .imageButton { display: grid; place-items: center; width: 100%; min-height: 50px; margin-top: 12px; border: 0; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 850; cursor: pointer; }
+.primaryButton, .secondaryButton { display: grid; place-items: center; width: 100%; min-height: 50px; margin-top: 12px; border: 0; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 850; cursor: pointer; }
 .primaryButton { background: #007da9; color: #fff; }
 .primaryButton:disabled { opacity: .55; cursor: wait; }
-.secondaryButton, .imageButton { border: 1px solid #d5e1e7; background: #fff; color: #436375; }
-.imageButton input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+.secondaryButton { border: 1px solid #d5e1e7; background: #fff; color: #436375; }
 .error { margin: 13px 0 0; padding: 12px; border-radius: 11px; background: #fff2f0; color: #b3473c; font-size: 12px; line-height: 1.6; }
 .note { margin: 17px 0 0; color: #91a0a8; font-size: 11px; line-height: 1.6; text-align: center; }
 .nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; justify-content: center; padding: 0 1rem 1rem; }

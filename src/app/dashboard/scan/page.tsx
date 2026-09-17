@@ -10,7 +10,6 @@ type QrReader = {
   start: (camera: { facingMode: string }, config: { fps: number; qrbox: { width: number; height: number }; aspectRatio?: number }, onSuccess: (text: string) => void, onError: (error: string) => void) => Promise<void>;
   stop: () => Promise<void>;
   clear: () => void;
-  scanFile: (file: File, showImage: boolean) => Promise<string>;
 };
 
 async function stopReaderIfActive(reader: QrReader | null, cameraActiveRef: { current: boolean }) {
@@ -51,6 +50,10 @@ export default function DashboardScanPage() {
       })();
     };
   }, []);
+
+  useEffect(() => {
+    if (ready) void startCamera();
+  }, [ready]);
 
   const acceptQr = async (raw: string) => {
     if (handledRef.current) return;
@@ -111,16 +114,6 @@ export default function DashboardScanPage() {
     setCameraState("idle");
   };
 
-  const scanImage = async (file: File) => {
-    setError("");
-    try {
-      const text = await readerRef.current?.scanFile(file, true);
-      if (text) await acceptQr(text);
-    } catch {
-      setError("QRを読み取れませんでした。画像を確認して、もう一度お試しください。");
-    }
-  };
-
   return (
     <main className={styles.page}>
       <header className={styles.header}><Link href="/dashboard" className={styles.back}>← ホーム</Link><span>参加者 / スキャン</span></header>
@@ -129,10 +122,9 @@ export default function DashboardScanPage() {
         <h1>受付QRを<br /><span>スキャン</span></h1>
         <p className={styles.copy}>購入QRは金額入力、払い戻しQRは運営が入力したチップ数の受け取り画面に進みます。</p>
         <div id="canfes-payment-qr-reader" className={styles.reader} aria-label="受付QRコード読み取り画面" />
-        {cameraState === "active" ? <button className={styles.secondaryButton} type="button" onClick={() => void stopCamera()}>カメラを停止</button> : <button className={styles.primaryButton} type="button" disabled={!ready || cameraState === "starting"} onClick={() => void startCamera()}>{cameraState === "starting" ? "カメラを起動しています…" : ready ? "カメラを起動する" : "読み取り画面を準備中…"}</button>}
-        <label className={styles.imageButton}>QR画像から読み取る<input type="file" accept="image/*" onChange={(event) => { const file = event.target.files?.[0]; if (file) void scanImage(file); event.currentTarget.value = ""; }} /></label>
+        {cameraState === "active" ? <button className={styles.secondaryButton} type="button" onClick={() => void stopCamera()}>カメラを停止</button> : <button className={styles.primaryButton} type="button" disabled={!ready || cameraState === "starting"} onClick={() => void startCamera()}>{cameraState === "starting" ? "カメラを起動しています…" : ready ? "カメラを再起動する" : "読み取り画面を準備中…"}</button>}
         {error ? <p className={styles.error} role="alert">{error}</p> : null}
-        <p className={styles.note}>iPhoneの標準カメラで受付QRを読み取っても同じ画面を開けます。</p>
+        <p className={styles.note}>カメラの使用を許可すると、受付QRを自動で読み取ります。</p>
       </section>
       <div className={styles.nav}><BottomNavigationBar /></div>
     </main>
