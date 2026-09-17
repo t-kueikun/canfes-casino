@@ -1,0 +1,82 @@
+.page { min-height: 100svh; background: #f4f7fa; color: #17384b; }
+.main { width: min(100% - 32px, 1080px); margin: 0 auto; padding: 24px 0 64px; }
+.topbar, .header, .summary, .toolbar, .accountRow { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.topbar { min-height: 44px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.brandMark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: #102f42; color: #fff; font-size: 20px; font-weight: 850; }
+.brand strong, .brand small { display: block; }
+.brand strong { font-size: 13px; letter-spacing: .13em; }
+.brand small { margin-top: 2px; color: #80919c; font-size: 9px; font-weight: 800; letter-spacing: .17em; }
+.topbarActions { display: flex; align-items: center; gap: 10px; }
+.backLink, .logoutButton, .refreshButton { min-height: 38px; padding: 0 14px; border: 1px solid #d6e1e8; border-radius: 10px; background: #fff; color: #466173; font: inherit; font-size: 12px; font-weight: 750; text-decoration: none; cursor: pointer; }
+.backLink:hover, .logoutButton:hover, .refreshButton:hover { border-color: #8bb7ca; color: #006f9d; }
+.header { align-items: flex-end; margin: 58px 0 26px; }
+.eyebrow { margin: 0 0 8px; color: #008cc6; font-size: 11px; font-weight: 850; letter-spacing: .13em; }
+.title { margin: 0; color: #102f42; font-size: clamp(28px, 5vw, 42px); letter-spacing: -.045em; }
+.copy { margin-top: 10px; color: #607583; font-size: 15px; }
+.headerLink { display: inline-flex; align-items: center; min-height: 42px; padding: 0 16px; border-radius: 11px; background: #e6f5fb; color: #007da9; font-size: 13px; font-weight: 800; text-decoration: none; }
+.headerLink:hover { background: #d9f1fa; }
+.summary { align-items: stretch; margin-bottom: 16px; }
+.summaryCard { flex: 1; padding: 17px 20px; border: 1px solid #e1eaf0; border-radius: 15px; background: #fff; box-shadow: 0 5px 18px rgba(23, 56, 75, .04); }
+.summaryCard span, .summaryCard small { display: block; color: #6d818d; font-size: 12px; font-weight: 750; }
+.summaryCard strong { display: block; margin-top: 3px; color: #102f42; font-size: 28px; letter-spacing: -.05em; }
+.summaryCard small { margin-top: 2px; color: #a0adb4; font-size: 11px; font-weight: 500; }
+.card { border: 1px solid #e1eaf0; border-radius: 18px; background: #fff; box-shadow: 0 8px 26px rgba(23, 56, 75, .055); }
+.toolbar { padding: 18px 20px; border-bottom: 1px solid #e9eff2; }
+.search { min-height: 44px; min-width: min(100%, 360px); padding: 0 13px; border: 1px solid #cbdbe4; border-radius: 11px; background: #fbfdfe; color: #102f42; outline: none; }
+.search:focus { border-color: #0099d9; outline: 3px solid rgba(0, 153, 217, .14); }
+.toolbarRight { display: flex; align-items: center; gap: 10px; }
+.select { min-height: 42px; padding: 0 11px; border: 1px solid #d6e1e8; border-radius: 10px; background: #fff; color: #466173; font-size: 12px; cursor: pointer; }
+.accountList { padding: 0 20px; }
+.accountRow { padding: 17px 0; border-bottom: 1px solid #edf2f5; }
+.accountRow:last-child { border-bottom: 0; }
+.accountIdentity { display: grid; min-width: 0; gap: 5px; }
+.accountName { overflow: hidden; color: #17384b; font-size: 15px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.accountMeta { overflow: hidden; color: #8a9aa4; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.accountMeta code { color: #617582; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.accountBalance { flex: 0 0 auto; text-align: right; }
+.accountBalance strong { display: block; color: #007da9; font-size: 21px; letter-spacing: -.04em; }
+.accountBalance span { display: block; margin-top: 3px; color: #8a9aa4; font-size: 11px; }
+.accountBalance small { display: block; margin-top: 5px; color: #8a9aa4; font-size: 10px; }
+.status { display: inline-flex; align-items: center; gap: 5px; margin-top: 5px; color: #319167; font-size: 10px; font-weight: 750; }
+.status::before { width: 6px; height: 6px; border-radius: 50%; background: #50b27c; content: ""; }
+.rewardList { display: grid; gap: 6px; margin-top: 10px; }
+.rewardItem { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.rewardClaimed, .rewardEligible, .rewardLocked { display: inline-flex; align-items: center; min-height: 24px; padding: 0 8px; border-radius: 7px; font-size: 10px; font-weight: 800; }
+.rewardClaimed { background: #eaf7ef; color: #287554; }
+.rewardEligible { background: #fff4dc; color: #a8741c; }
+.rewardLocked { background: #f0f3f5; color: #87959c; }
+.rewardButton { min-height: 26px; padding: 0 8px; border: 1px solid #c8e4ed; border-radius: 7px; background: #f1fbfd; color: #007ba7; font: inherit; font-size: 10px; font-weight: 800; cursor: pointer; }
+.rewardButton:hover:not(:disabled) { border-color: #77bdcf; background: #e4f7fb; }
+.rewardButton:disabled { cursor: wait; opacity: .55; }
+.notice { margin: 0; padding: 12px 20px; background: #edf9f3; color: #287554; font-size: 13px; font-weight: 750; }
+.empty, .loading, .error { padding: 42px 20px; color: #8a9aa4; font-size: 13px; text-align: center; }
+.error { color: #b3473c; }
+.visuallyHidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.footer { margin-top: 24px; text-align: center; }
+.footer a { color: #007da9; font-size: 12px; font-weight: 750; text-decoration: none; }
+.footer a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 680px) {
+  .main { width: min(100% - 24px, 560px); padding-top: 16px; }
+  .header { display: block; margin-top: 42px; }
+  .headerLink { margin-top: 18px; }
+  .toolbar { align-items: stretch; flex-direction: column; }
+  .search { width: 100%; min-width: 0; }
+  .toolbarRight { justify-content: space-between; }
+}
+
+@media (max-width: 440px) {
+  .main { width: min(100% - 20px, 440px); }
+  .topbarActions .backLink { padding: 0 10px; }
+  .topbarActions .logoutButton { padding: 0 10px; }
+  .summary { gap: 8px; }
+  .summaryCard { padding: 13px 12px; }
+  .summaryCard strong { font-size: 22px; }
+  .summaryCard span { font-size: 11px; }
+  .toolbar, .accountList { padding-right: 15px; padding-left: 15px; }
+  .accountRow { align-items: flex-start; }
+  .accountBalance strong { font-size: 18px; }
+  .accountMeta { max-width: 205px; }
+  .rewardItem { align-items: flex-start; flex-direction: column; gap: 4px; }
+}

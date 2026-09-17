@@ -52,6 +52,7 @@
 .heroLinks,
 .resultActions,
 .footerLinks { display: flex; align-items: center; gap: 12px; }
+.heroLinks { flex-wrap: wrap; justify-content: flex-end; }
 
 .liveBadge {
   display: inline-flex;
@@ -103,15 +104,40 @@
 .noticeError { background: #fff2f0; color: #b3473c; }
 .noticeError > :first-child { background: #d96a5b; color: #fff; }
 
-.contentGrid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(290px, .65fr); gap: 16px; align-items: stretch; }
+.contentGrid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: stretch; }
+.detailsCard { margin-bottom: 12px; border: 1px solid #e1eaf0; border-radius: 14px; background: #fff; }
+.detailsCard > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 0 16px; color: #17384b; cursor: pointer; list-style: none; }
+.detailsCard > summary::-webkit-details-marker { display: none; }
+.detailsCard > summary::after { content: "＋"; color: #007da9; font-size: 18px; font-weight: 700; }
+.detailsCard[open] > summary::after { content: "−"; }
+.detailsCard > summary > span { margin-left: auto; color: #80919c; font-size: 12px; font-weight: 650; }
+.detailsCard > .attendanceCard, .detailsCard > .historyCard { margin: 0; border: 0; border-top: 1px solid #edf2f5; border-radius: 0 0 14px 14px; box-shadow: none; }
 .card { border: 1px solid #e1eaf0; border-radius: 18px; background: #fff; box-shadow: 0 8px 26px rgba(23, 56, 75, .055); }
-.issueCard, .bingoCard, .historyCard { padding: 26px; }
+.issueCard, .historyCard { padding: 26px; }
+.attendanceCard { margin-bottom: 16px; padding: 24px 26px; }
+.attendanceHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.attendanceHeader h2 { margin: 0; color: #17384b; font-size: 20px; letter-spacing: -.025em; }
+.attendanceHeader p { margin: 7px 0 0; color: #778995; font-size: 13px; line-height: 1.6; }
+.attendanceStatus { display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto; padding: 8px 11px; border-radius: 999px; background: #edf9f3; color: #287554; font-size: 11px; font-weight: 800; }
+.attendanceStatus > span { width: 7px; height: 7px; border-radius: 50%; background: #33a76d; box-shadow: 0 0 0 4px rgba(51, 167, 109, .12); }
+.arrivalNotice { display: flex; align-items: center; gap: 9px; margin-top: 18px; padding: 11px 13px; border-radius: 11px; background: #eaf7fc; color: #006d96; font-size: 13px; }
+.arrivalNotice > span { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #21a1cf; color: #fff; font-size: 12px; }
+.attendanceList { display: grid; gap: 0; margin-top: 18px; }
+.attendanceItem { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 12px 10px; border-top: 1px solid #edf2f5; border-radius: 9px; }
+.attendanceItemNew { background: #f0fbfe; box-shadow: inset 3px 0 #21a1cf; }
+.attendanceItem > div:first-child { min-width: 0; display: grid; gap: 4px; }
+.attendanceItem strong { color: #17384b; font-size: 14px; }
+.attendanceItem span { color: #8a9aa4; font-size: 11px; }
+.attendanceDetails { display: flex; align-items: center; gap: 9px; flex: 0 0 auto; }
+.attendanceDetails > strong { color: #007da9; font-size: 13px; }
+.newArrivalBadge { padding: 4px 7px; border-radius: 999px; background: #dff4fb; color: #007da9 !important; font-size: 10px !important; font-weight: 850; }
+.attendanceLink { display: inline-block; margin-top: 15px; color: #007da9; font-size: 12px; font-weight: 750; text-decoration: none; }
+.attendanceLink:hover { text-decoration: underline; text-underline-offset: 3px; }
 .cardHeader { align-items: flex-start; }
 .cardHeader h2, .issuedHeader h2, .historyHeader h2 { margin: 0; color: #17384b; font-size: 20px; letter-spacing: -.025em; }
 .cardHeader p, .issuedHeader p { max-width: 480px; margin: 7px 0 0; color: #778995; font-size: 13px; line-height: 1.6; }
 .cardKicker { display: block; margin-bottom: 9px; font-size: 10px; }
-.stepNumber, .bingoIcon, .successMark { display: grid; place-items: center; flex: 0 0 auto; width: 42px; height: 42px; border-radius: 13px; background: #e9f7fc; color: #008cc6; font-size: 12px; font-weight: 850; }
-.bingoIcon { background: #fff4dc; color: #b87916; font-size: 18px; }
+.stepNumber, .successMark { display: grid; place-items: center; flex: 0 0 auto; width: 42px; height: 42px; border-radius: 13px; background: #e9f7fc; color: #008cc6; font-size: 12px; font-weight: 850; }
 .successMark { background: #e6f7ee; color: #319167; font-size: 20px; }
 
 .formField { margin-top: 25px; }
@@ -133,15 +159,9 @@
 .spinner { width: 15px; height: 15px; border: 2px solid rgba(255, 255, 255, .4); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.bingoCard { display: flex; flex-direction: column; }
-.currentNumber { display: flex; align-items: baseline; justify-content: space-between; margin: 28px 0 18px; padding: 14px 18px; border-radius: 14px; background: #fff8e9; }
-.currentNumber small { color: #a57928; font-size: 12px; font-weight: 800; }
-.currentNumber strong { color: #b87916; font-size: 46px; line-height: 1; letter-spacing: -.06em; }
 .secondaryButton { display: inline-flex; align-items: center; justify-content: space-between; min-height: 46px; padding: 0 15px; border-radius: 11px; font-size: 13px; font-weight: 800; }
-.bingoCard .secondaryButton { width: 100%; }
 .secondaryButton span { color: #007da9; font-size: 18px; }
 .textLink { display: block; margin-top: 16px; font-size: 12px; }
-
 .issuedCard { margin-top: 16px; padding: 26px; }
 .issuedBody { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: center; margin-top: 20px; }
 .qrFrame { display: grid; place-items: center; width: 240px; height: 240px; border: 1px solid #e4edf1; border-radius: 14px; background: #fbfdfe; }
@@ -196,8 +216,10 @@
   .logoutButton { min-height: 34px; padding: 0 10px; }
   .hero h1 { font-size: 30px; }
   .heroCopy { font-size: 13px; }
-  .issueCard, .bingoCard, .historyCard, .issuedCard { padding: 20px 16px; }
+  .issueCard, .historyCard, .issuedCard, .attendanceCard { padding: 20px 16px; }
   .cardHeader h2, .issuedHeader h2, .historyHeader h2 { font-size: 18px; }
+  .attendanceHeader { display: block; }
+  .attendanceStatus { margin-top: 15px; }
   .presetRow { gap: 5px; }
   .presetButton, .presetActive { padding: 0 3px; }
   .qrFrame { width: 220px; height: 220px; }

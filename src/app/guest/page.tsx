@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 export default function GuestPage() {
   const router = useRouter();
   const [checkingSession, setCheckingSession] = useState(true);
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
 
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("code");
@@ -19,6 +20,7 @@ export default function GuestPage() {
     fetch("/api/guest/account", { cache: "no-store" })
       .then((response) => {
         if (active && response.ok) router.replace("/dashboard");
+        if (active && response.status === 409) setAlreadyRegistered(true);
       })
       .catch(() => undefined)
       .finally(() => {
@@ -31,6 +33,28 @@ export default function GuestPage() {
 
   if (checkingSession) {
     return <main className={styles.loadingPage} aria-busy="true">参加情報を確認しています…</main>;
+  }
+
+  if (alreadyRegistered) {
+    return (
+      <main className={styles.page}>
+        <section className={styles.entryCard} aria-labelledby="guest-registered-title">
+          <div className={styles.brandRow}>
+            <span className={styles.brandMark} aria-hidden="true">爆</span>
+            <span className={styles.brandName}>爆裂カジノ<small>キャンパスフェスティバル横浜キャンパス</small></span>
+          </div>
+          <div className={styles.heroCopyCompact}>
+            <p className={styles.eyebrow}>参加登録済み</p>
+            <h1 id="guest-registered-title">この端末は<br /><span>登録済みです</span></h1>
+            <p className={styles.lead}>同じ端末から新しい参加者アカウントを作成することはできません。</p>
+          </div>
+          <div className={styles.entryForm}>
+            <a className={styles.primaryButton} href="/dashboard">参加画面を開く</a>
+          </div>
+          <a className={styles.operatorLink} href="/werewolf">人狼の観客投票はこちら →</a>
+        </section>
+      </main>
+    );
   }
 
   return (
@@ -59,6 +83,7 @@ export default function GuestPage() {
         </a>
 
         <p className={styles.privacyNote}>メールアドレス・パスワードは必要ありません</p>
+        <a className={styles.operatorLink} href="/werewolf">人狼の観客投票はこちら →</a>
         <a className={styles.operatorLink} href="/operator/login">運営の方はこちら</a>
       </section>
     </main>

@@ -3,7 +3,9 @@ import { NextResponse } from "next/server";
 import { getSupabaseServiceClient } from "@/lib/supabaseRoute";
 
 export const GUEST_SESSION_COOKIE = "canfes_guest_session";
-const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
+export const GUEST_ONBOARDING_COOKIE = "canfes_guest_onboarded";
+const ONBOARDING_MAX_AGE = 60 * 60 * 24 * 365;
+const SESSION_MAX_AGE = ONBOARDING_MAX_AGE;
 
 export type GuestAccount = {
   id: string;
@@ -20,6 +22,15 @@ export function hashGuestSessionToken(token: string) {
   return createHash("sha256").update(token).digest("hex");
 }
 
+function readCookie(request: Request, name: string) {
+  const cookieHeader = request.headers.get("cookie") ?? "";
+  const cookie = cookieHeader
+    .split(";")
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${name}=`));
+  return cookie ? decodeURIComponent(cookie.slice(name.length + 1)) : null;
+}
+
 function readToken(request: Request) {
   const authorization = request.headers.get("authorization");
   if (authorization?.toLowerCase().startsWith("bearer ")) {
@@ -27,12 +38,11 @@ function readToken(request: Request) {
     if (bearer) return bearer;
   }
 
-  const cookieHeader = request.headers.get("cookie") ?? "";
-  const cookie = cookieHeader
-    .split(";")
-    .map((part) => part.trim())
-    .find((part) => part.startsWith(`${GUEST_SESSION_COOKIE}=`));
-  return cookie ? decodeURIComponent(cookie.slice(GUEST_SESSION_COOKIE.length + 1)) : null;
+  return readCookie(request, GUEST_SESSION_COOKIE);
+}
+
+export function hasGuestOnboardingCookie(request: Request) {
+  return readCookie(request, GUEST_ONBOARDING_COOKIE) === "1";
 }
 
 export async function resolveGuestAccount(request: Request) {
@@ -66,6 +76,19 @@ export function setGuestSessionCookie(response: NextResponse, token: string) {
     secure: process.env.NODE_ENV === "production",
     path: "/",
     maxAge: SESSION_MAX_AGE,
+  });
+  return response;
+}
+
+export function setGuestOnboardingCookie(response: NextResponse) {
+  response.cookies.set({
+    name: GUEST_ONBOARDING_COOKIE,
+    value: "1",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: ONBOARDING_MAX_AGE,
   });
   return response;
 }

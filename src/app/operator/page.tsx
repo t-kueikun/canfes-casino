@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseClient } from "@/lib/supabase";
 import styles from "./page.module.css";
 
 type Code = { id: string; code: string; initial_amount: number; created_at: string; used_at: string | null; qr_url?: string };
 type IssuedCode = { code: string; initial_amount: number; qr_url: string };
-type DrawState = { drawn_numbers: number[]; current_number: number | null; active: boolean };
 type CodeFilter = "all" | "unused" | "used";
+type Attendee = { id: string; display_name: string; active: boolean; balance: number; created_at: string; last_seen_at: string };
 
 const amountPresets = [100, 300, 500, 1000];
 const qrDisplayStorageKey = "canfes-qr-display-state";
@@ -29,22 +29,27 @@ export default function OperatorPage() {
   const [amount, setAmount] = useState(300);
   const [codes, setCodes] = useState<Code[]>([]);
   const [issued, setIssued] = useState<IssuedCode | null>(null);
-  const [drawState, setDrawState] = useState<DrawState>({ drawn_numbers: [], current_number: null, active: false });
   const [filter, setFilter] = useState<CodeFilter>("all");
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadingCodes, setLoadingCodes] = useState(true);
-  const [loadingBingo, setLoadingBingo] = useState(false);
+  const [attendees, setAttendees] = useState<Attendee[]>([]);
+  const [attendanceLoading, setAttendanceLoading] = useState(true);
+  const [attendanceNotice, setAttendanceNotice] = useState<string | null>(null);
+  const [newArrivalIds, setNewArrivalIds] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState(false);
   const displayWindowRef = useRef<Window | null>(null);
   const displayChannelRef = useRef<BroadcastChannel | null>(null);
+  const knownArrivalIdsRef = useRef<Set<string>>(new Set());
+  const hasLoadedAttendanceRef = useRef(false);
+  const arrivalNoticeTimeoutRef = useRef<number | null>(null);
 
-  const authHeaders = async (): Promise<Record<string, string>> => {
-    const { data: { session } } = await supabase.auth.getSession();
+  const authHeaders = useCallback(async (): Promise<Record<string, string>> => {
+    const { data: { session } } = await getSupabaseClient().auth.getSession();
     const headers: Record<string, string> = {};
     if (session?.access_token) headers.Authorization = `Bearer ${session.access_token}`;
     return headers;
-  };
+  }, []);
 
   const loadCodes = async () => {
     setLoadingCodes(true);
@@ -57,10 +62,42 @@ export default function OperatorPage() {
     setLoadingCodes(false);
   };
 
-  const loadBingo = async () => {
-    const response = await fetch("/api/bingo/draw", { cache: "no-store" });
-    if (response.ok) setDrawState(await response.json() as DrawState);
-  };
+  const loadAttendance = useCallback(async () => {
+    const response = await fetch("/api/operator/attendance", { cache: "no-store", headers: await authHeaders() });
+    if (response.status === 401) { router.replace("/operator/login"); return; }
+    const body = await response.json().catch(() => ({})) as { data?: Attendee[]; error?: string };
+    if (!response.ok) throw new Error(body.error ?? "来場受付を読み込めませんでした");
+
+    const nextAttendees = body.data ?? [];
+    const newArrivals = hasLoadedAttendanceRef.current
+      ? nextAttendees.filter((attendee) => !knownArrivalIdsRef.current.has(attendee.id))
+      : [];
+    knownArrivalIdsRef.current = new Set(nextAttendees.map((attendee) => attendee.id));
+    setAttendees(nextAttendees);
+    setAttendanceLoading(false);
+
+    if (newArrivals.length > 0) {
+      setNewArrivalIds(new Set(newArrivals.map((attendee) => attendee.id)));
+      setAttendanceNotice(newArrivals.length === 1
+        ? `${newArrivals[0].display_name}さんが来場しました`
+        : `${newArrivals.length}名の参加者が来場しました`);
+      if (arrivalNoticeTimeoutRef.current) window.clearTimeout(arrivalNoticeTimeoutRef.current);
+      arrivalNoticeTimeoutRef.current = window.setTimeout(() => {
+        setAttendanceNotice(null);
+        setNewArrivalIds(new Set());
+      }, 15000);
+    }
+    hasLoadedAttendanceRef.current = true;
+  }, [authHeaders, router]);
+
+  const refreshAttendance = useCallback(async () => {
+    try {
+      await loadAttendance();
+    } catch (attendanceError) {
+      setAttendanceLoading(false);
+      setMessage({ type: "error", text: attendanceError instanceof Error ? attendanceError.message : "来場受付を読み込めませんでした" });
+    }
+  }, [loadAttendance]);
 
   useEffect(() => {
     if (typeof BroadcastChannel === "undefined") return;
@@ -73,11 +110,22 @@ export default function OperatorPage() {
   }, []);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    getSupabaseClient().auth.getUser().then(({ data: { user } }) => {
       if (!user) router.replace("/operator/login");
-      else { void loadCodes(); void loadBingo(); }
+      else { void loadCodes(); void refreshAttendance(); }
     });
-  }, [router]);
+  }, [refreshAttendance, router]);
+
+  useEffect(() => {
+    let interval: number | null = null;
+    getSupabaseClient().auth.getUser().then(({ data: { user } }) => {
+      if (user) interval = window.setInterval(() => void refreshAttendance(), 5000);
+    });
+    return () => {
+      if (interval) window.clearInterval(interval);
+      if (arrivalNoticeTimeoutRef.current) window.clearTimeout(arrivalNoticeTimeoutRef.current);
+    };
+  }, [refreshAttendance]);
 
   const issueCode = async () => {
     if (amount < 0 || amount > 100000) {
@@ -103,20 +151,6 @@ export default function OperatorPage() {
       await loadCodes();
     }
     setLoading(false);
-  };
-
-  const draw = async () => {
-    setLoadingBingo(true);
-    setMessage(null);
-    const { data: { session } } = await supabase.auth.getSession();
-    const response = await fetch("/api/bingo/draw", {
-      method: "POST",
-      headers: session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : undefined,
-    });
-    const body = await response.json().catch(() => ({})) as DrawState & { error?: string };
-    if (!response.ok) setMessage({ type: "error", text: body.error ?? "抽選に失敗しました" });
-    else { setDrawState(body); setMessage({ type: "success", text: `${body.current_number} を発表しました` }); }
-    setLoadingBingo(false);
   };
 
   const copyLink = async () => {
@@ -181,7 +215,7 @@ export default function OperatorPage() {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    await getSupabaseClient().auth.signOut();
     router.replace("/operator/login");
   };
 
@@ -191,8 +225,6 @@ export default function OperatorPage() {
     return true;
   });
   const unusedCount = codes.filter((item) => !item.used_at).length;
-  const usedCount = codes.filter((item) => Boolean(item.used_at)).length;
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -209,29 +241,35 @@ export default function OperatorPage() {
 
         <section className={styles.hero}>
           <div>
-            <p className={styles.eyebrow}>キャンパスフェスティバル横浜キャンパス / EVENT CONTROL</p>
-            <h1>運営ダッシュボード</h1>
-            <p className={styles.heroCopy}>参加者の受付とゲーム進行を、ここからまとめて管理できます。</p>
+            <p className={styles.eyebrow}>キャンパスフェスティバル横浜キャンパス</p>
+            <h1>運営</h1>
+            <p className={styles.heroCopy}>参加受付用のQRを発行できます。</p>
           </div>
           <div className={styles.heroLinks}>
-            <Link href="/guest" target="_blank">参加者入口 ↗</Link>
-            <Link href="/dashboard/bingo/control">ビンゴ進行 →</Link>
+            <Link href="/operator/scan">QRを読み取る</Link>
+            <Link href="/operator/payments">購入・払戻しQRを表示</Link>
           </div>
         </section>
 
-        <section className={styles.statsGrid} aria-label="運営状況">
-          <div className={styles.statCard}><span>発行済みQR</span><strong>{codes.length}</strong><small>累計</small></div>
-          <div className={styles.statCard}><span>未使用</span><strong>{unusedCount}</strong><small>受付待ち</small></div>
-          <div className={styles.statCard}><span>使用済み</span><strong>{usedCount}</strong><small>参加登録済み</small></div>
-        </section>
+        <details className={styles.detailsCard}>
+          <summary><strong>来場状況</strong><span>{attendanceLoading ? "確認中…" : `${attendees.length}人`}</span></summary>
+          <section className={`${styles.card} ${styles.attendanceCard}`} aria-labelledby="attendance-title">
+          <div className={styles.attendanceHeader}>
+            <div><h2 id="attendance-title">来場受付</h2><p>QRから参加登録した人を確認できます。</p></div>
+            <span className={styles.attendanceStatus}><span />5秒ごとに更新</span>
+          </div>
+          {attendanceNotice ? <div className={styles.arrivalNotice} role="status"><span>✓</span><strong>{attendanceNotice}</strong></div> : null}
+          {attendanceLoading ? <p className={styles.emptyState}>来場受付を読み込んでいます…</p> : attendees.length === 0 ? <p className={styles.emptyState}>まだ来場受付はありません。</p> : <div className={styles.attendanceList}>{attendees.slice(0, 8).map((attendee) => <div key={attendee.id} className={`${styles.attendanceItem} ${newArrivalIds.has(attendee.id) ? styles.attendanceItemNew : ""}`}><div><strong>{attendee.display_name}</strong><span>{formatDate(attendee.created_at)} に受付</span></div><div className={styles.attendanceDetails}><strong>{attendee.balance.toLocaleString()} CF</strong>{newArrivalIds.has(attendee.id) ? <span className={styles.newArrivalBadge}>新着</span> : null}</div></div>)}</div>}
+          <Link className={styles.attendanceLink} href="/operator/accounts">全参加者の残高・景品状況を見る →</Link>
+          </section>
+        </details>
 
         {message ? <div className={`${styles.notice} ${message.type === "error" ? styles.noticeError : styles.noticeSuccess}`} role="status">{message.type === "error" ? "!" : "✓"}<span>{message.text}</span></div> : null}
 
         <div className={styles.contentGrid}>
           <section className={`${styles.card} ${styles.issueCard}`}>
             <div className={styles.cardHeader}>
-              <div><span className={styles.cardKicker}>STEP 01</span><h2>参加者QRを発行</h2><p>参加者のスマートフォンで読み取るQRを作成します。</p></div>
-              <span className={styles.stepNumber}>01</span>
+              <div><h2>参加受付QRを発行</h2><p>参加者に読み取ってもらうQRを作成します。</p></div>
             </div>
             <div className={styles.formField}>
               <label htmlFor="initial-amount">初期CF</label>
@@ -241,18 +279,9 @@ export default function OperatorPage() {
               </div>
             </div>
             <button className={styles.primaryButton} onClick={() => void issueCode()} disabled={loading}>{loading ? <><span className={styles.spinner} />発行しています…</> : <>QRコードを発行する <span>→</span></>}</button>
-            <p className={styles.helper}>最初の発行時に別モニターの表示画面を自動で開きます。以後は発行するたびに同じ画面のQRが自動更新されます。</p>
+            <p className={styles.helper}>発行したQRを参加者に読み取ってもらってください。</p>
           </section>
 
-          <section className={`${styles.card} ${styles.bingoCard}`}>
-            <div className={styles.cardHeader}>
-              <div><span className={styles.cardKicker}>STEP 02</span><h2>ビンゴ進行</h2><p>会場スクリーンに出す番号を抽選します。</p></div>
-              <span className={styles.bingoIcon}>B</span>
-            </div>
-            <div className={styles.currentNumber} aria-label="現在のビンゴ番号"><small>現在の番号</small><strong>{drawState.current_number ?? "—"}</strong></div>
-            <button className={styles.secondaryButton} onClick={() => void draw()} disabled={loadingBingo}>{loadingBingo ? "抽選中…" : "次の番号を抽選"}<span>↗</span></button>
-            <Link className={styles.textLink} href="/dashboard/bingo/control">詳細な進行画面を開く →</Link>
-          </section>
         </div>
 
         {issued ? <section className={`${styles.card} ${styles.issuedCard}`}>
@@ -267,9 +296,11 @@ export default function OperatorPage() {
           </div>
         </section> : null}
 
-        <section className={`${styles.card} ${styles.historyCard}`}>
+        <details className={styles.detailsCard}>
+          <summary><strong>発行したQRの履歴</strong><span>{loadingCodes ? "確認中…" : `${unusedCount}件が未使用`}</span></summary>
+          <section className={`${styles.card} ${styles.historyCard}`}>
           <div className={styles.historyHeader}>
-            <div><span className={styles.cardKicker}>ACTIVITY</span><h2>発行履歴</h2></div>
+            <div><h2>発行履歴</h2></div>
             <button className={styles.refreshButton} type="button" onClick={() => void loadCodes()} disabled={loadingCodes}>{loadingCodes ? "読み込み中…" : "更新 ↻"}</button>
           </div>
           <div className={styles.filterRow} role="tablist" aria-label="発行履歴の絞り込み">
@@ -278,9 +309,10 @@ export default function OperatorPage() {
           <div className={styles.historyList}>
             {loadingCodes ? <p className={styles.emptyState}>履歴を読み込んでいます…</p> : filteredCodes.length === 0 ? <p className={styles.emptyState}>{filter === "all" ? "まだQRを発行していません。" : "該当する履歴はありません。"}</p> : filteredCodes.map((item) => <div key={item.id} className={styles.historyItem}><div><strong>{item.code}</strong><span>{formatDate(item.created_at)} ・ {item.initial_amount.toLocaleString()} CF</span></div><div className={styles.historyItemActions}><span className={item.used_at ? styles.statusUsed : styles.statusUnused}>{item.used_at ? "使用済み" : "未使用"}</span>{!item.used_at ? <button className={styles.historyQrButton} type="button" onClick={() => showHistoryQr(item)}>QR表示 ↗</button> : null}</div></div>)}
           </div>
-        </section>
+          </section>
+        </details>
 
-        <footer className={styles.footerLinks}><Link href="/dashboard/bingo/control">ビンゴ進行</Link><span>•</span><Link href="/guest">参加者入口</Link></footer>
+        <footer className={styles.footerLinks}><Link href="/operator/accounts">参加者・景品管理</Link></footer>
       </main>
     </div>
   );

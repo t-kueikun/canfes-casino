@@ -36,15 +36,15 @@ const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({ className, va
   return (
     <div className={containerClassName}>
       {/* 中央のフローティングアクションボタン (FAB) */}
-      <Link href="/dashboard/payment" className={`${styles.fab} ${isPayment ? styles.fabActive : ''}`}>
+      <Link href="/dashboard/scan" className={`${styles.fab} ${isPayment || pathname === '/dashboard/scan' ? styles.fabActive : ''}`}>
         <Image
           src="/icons/QR Code Scanner Icon.svg"
-          alt="支払う"
+          alt="QRコードをスキャン"
           width={28}
           height={28}
           className={styles.fabIcon}
         />
-        <span className={styles.fabText}>支払う</span>
+        <span className={styles.fabText}>スキャン</span>
       </Link>
 
       {/* ナビゲーションバー本体 */}

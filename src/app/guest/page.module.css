@@ -185,6 +185,10 @@
   gap: 12px;
 }
 
+.scannerPanel[hidden] {
+  display: none;
+}
+
 .scannerActions {
   display: grid;
   gap: 10px;

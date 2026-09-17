@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import { getSupabaseRouteClient, getSupabaseServiceClient, resolveRouteAuth } from "@/lib/supabaseRoute";
+import { getAppUrl } from "@/lib/appUrl";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +34,7 @@ export async function GET(request: Request) {
     .order("created_at", { ascending: false })
     .limit(50);
   if (error) return NextResponse.json({ error: formatDatabaseError(error) }, { status: 500 });
-  const appUrl = process.env.NEXT_PUBLIC_CANFES_APP_URL || new URL(request.url).origin;
+  const appUrl = getAppUrl(request);
   return NextResponse.json({
     data: (data ?? []).map((item: any) => ({
       ...item,
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
   }
   if (error || !data) return NextResponse.json({ error: formatDatabaseError(error) }, { status: 500 });
 
-  const appUrl = process.env.NEXT_PUBLIC_CANFES_APP_URL || new URL(request.url).origin;
+  const appUrl = getAppUrl(request);
   return NextResponse.json({
     code: data.code,
     initial_amount: data.initial_amount,

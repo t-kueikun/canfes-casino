@@ -39,23 +39,16 @@ export default function DashboardPage() {
 
   useEffect(() => { void loadDashboard(); }, [loadDashboard]);
 
-  const logout = async () => {
-    await fetch("/api/guest/account", { method: "DELETE" });
-    router.replace("/guest");
-  };
-
   return (
     <div className={styles.pageContainer}>
       <main className={styles.mainContent}>
         <header className={styles.header}>
           <div><p className={styles.eyebrow}>爆裂カジノ / PARTICIPANT</p><h1>{account?.display_name ?? "参加者"}さん</h1></div>
-          <button className={styles.logoutButton} onClick={() => void logout()}>退出</button>
         </header>
         {error ? <div className={styles.historyState} style={{ color: "#ef4444" }}>{error}</div> : null}
         <section className={styles.balanceContainer} aria-label="チップ残高">
           <div className={styles.balanceActions}>
-            <button className={styles.actionButton} onClick={() => router.push("/dashboard/payment")}><Image src="/icons/QR Code Scanner Icon.svg" alt="支払いQR" width={32} height={32} className={styles.actionIcon} /><span>支払いQR</span></button>
-            <button className={styles.actionButton} onClick={() => router.push("/dashboard/bingo")}><Image src="/icons/Request Icon.svg" alt="ビンゴ" width={32} height={32} className={styles.actionIcon} /><span>ビンゴ</span></button>
+            <button className={styles.actionButton} onClick={() => router.push("/dashboard/rewards")}><Image src="/icons/Request Icon.svg" alt="景品" width={32} height={32} className={styles.actionIcon} /><span>景品</span></button>
             <button className={styles.actionButton} onClick={() => router.push("/dashboard/history")}><Image src="/icons/History Icon.svg" alt="履歴" width={32} height={32} className={styles.actionIcon} /><span>履歴</span></button>
           </div>
           <div className={styles.balanceDisplayCard}>

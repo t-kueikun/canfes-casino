@@ -1,0 +1,84 @@
+.page { min-height: 100svh; background: #f4f7fa; color: #17384b; }
+.main { width: min(100% - 32px, 980px); margin: 0 auto; padding: 24px 0 64px; }
+.topbar, .hero, .cardHeader, .resultsHeader { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.topbar { min-height: 44px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.brandMark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: #102f42; color: #fff; font-size: 20px; font-weight: 850; }
+.brand strong, .brand small { display: block; }
+.brand strong { font-size: 13px; letter-spacing: .13em; }
+.brand small { margin-top: 2px; color: #80919c; font-size: 9px; font-weight: 800; letter-spacing: .17em; }
+.topbarActions { display: flex; align-items: center; gap: 9px; }
+.backLink, .audienceLink { display: inline-flex; align-items: center; min-height: 38px; padding: 0 13px; border: 1px solid #d6e1e8; border-radius: 10px; background: #fff; color: #466173; font-size: 12px; font-weight: 750; text-decoration: none; }
+.audienceLink { border-color: #c8e4ed; background: #eaf8fc; color: #007da9; }
+.backLink:hover, .audienceLink:hover { border-color: #8bb7ca; color: #006f9d; }
+.hero { align-items: flex-end; margin: 58px 0 28px; }
+.eyebrow, .cardKicker { margin: 0 0 8px; color: #008cc6; font-size: 11px; font-weight: 850; letter-spacing: .13em; }
+.hero h1 { margin: 0; color: #102f42; font-size: clamp(30px, 5vw, 44px); letter-spacing: -.05em; }
+.hero p:last-child { margin-top: 10px; color: #607583; font-size: 14px; }
+.phaseBadge { display: inline-flex; align-items: center; gap: 7px; padding: 9px 13px; border-radius: 999px; font-size: 12px; font-weight: 850; }
+.phaseBadge span { width: 7px; height: 7px; border-radius: 50%; }
+.phaseDay { background: #fff0cf; color: #a46a13; }
+.phaseDay span { background: #e0a62d; }
+.phaseNight { background: #e9eef4; color: #647589; }
+.phaseNight span { background: #8294a8; }
+.error, .message { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding: 12px 15px; border-radius: 12px; font-size: 13px; font-weight: 700; }
+.error { background: #fff0ee; color: #b3473c; }
+.error button { border: 1px solid #e8b5ad; border-radius: 8px; background: #fff; color: #a84237; font: inherit; font-size: 11px; cursor: pointer; }
+.message { justify-content: flex-start; background: #edf9f3; color: #287554; }
+.controlCard, .resultsCard { padding: 25px; border: 1px solid #e1eaf0; border-radius: 18px; background: #fff; box-shadow: 0 8px 26px rgba(23, 56, 75, .055); }
+.resultsCard { margin-top: 16px; }
+.cardHeader { align-items: flex-start; }
+.cardKicker { display: block; margin-bottom: 8px; font-size: 10px; }
+.cardHeader h2, .resultsHeader h2 { margin: 0; color: #17384b; font-size: 21px; letter-spacing: -.03em; }
+.cardHeader p { margin-top: 7px; color: #778995; font-size: 13px; }
+.cardIcon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: #fff4dc; color: #b87916; font-size: 23px; }
+.phaseButtons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
+.dayButton, .dayButtonActive, .nightButton, .nightButtonActive { display: grid; gap: 5px; min-height: 94px; padding: 15px; border: 1px solid #dce5e9; border-radius: 14px; background: #fff; color: #526a78; text-align: left; cursor: pointer; }
+.dayButton:hover:not(:disabled), .nightButton:hover:not(:disabled) { border-color: #b4d7e2; background: #f6fcfe; }
+.dayButtonActive { border-color: #d7a03f; background: #fff8e9; color: #94661e; box-shadow: 0 0 0 3px rgba(215, 160, 63, .12); }
+.nightButtonActive { border-color: #8294a8; background: #f0f3f7; color: #53667a; box-shadow: 0 0 0 3px rgba(130, 148, 168, .12); }
+.phaseButtons button:disabled { cursor: default; opacity: .95; }
+.phaseButtons strong { font-size: 24px; }
+.phaseButtons span { font-size: 12px; font-weight: 700; }
+.helper, .note { color: #8a9aa4; font-size: 11px; line-height: 1.6; }
+.helper { margin: 14px 0 0; }
+.totalVotes { color: #007da9; font-size: 29px; letter-spacing: -.05em; }
+.totalVotes small { margin-left: 4px; color: #80919c; font-size: 12px; letter-spacing: 0; }
+.resultList { margin-top: 21px; }
+.resultRow { display: grid; grid-template-columns: minmax(160px, .8fr) minmax(240px, 1.2fr); align-items: center; gap: 20px; padding: 14px 0; border-top: 1px solid #edf2f5; }
+.resultIdentity { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.resultIdentity strong { overflow: hidden; color: #17384b; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+.rank { display: grid; place-items: center; flex: 0 0 auto; width: 24px; height: 24px; border-radius: 8px; background: #f0f4f6; color: #80919c; font-size: 11px; font-weight: 850; }
+.barArea { display: flex; align-items: center; gap: 10px; }
+.bar { display: block; flex: 1; height: 10px; overflow: hidden; border-radius: 999px; background: #edf2f5; }
+.bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f0bb50, #d78d27); }
+.barArea b { min-width: 18px; color: #a46a13; font-size: 13px; text-align: right; }
+.stateText { padding: 28px 0 8px; color: #8a9aa4; font-size: 13px; text-align: center; }
+.playersCard, .audienceCard { margin-top: 16px; padding: 25px; border: 1px solid #e1eaf0; border-radius: 18px; background: #fff; box-shadow: 0 8px 26px rgba(23, 56, 75, .055); }
+.playersHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.playersHeader h2, .audienceCard h2 { margin: 0; color: #17384b; font-size: 21px; letter-spacing: -.03em; }
+.playersHeader p, .audienceCard p { max-width: 520px; margin: 7px 0 0; color: #778995; font-size: 13px; line-height: 1.65; }
+.playersHeader > strong { color: #007da9; font-size: 26px; }
+.playersHeader > strong small { margin-left: 4px; color: #80919c; font-size: 12px; }
+.addPlayerForm { margin-top: 20px; }
+.addPlayerForm label { display: block; margin-bottom: 8px; color: #526a78; font-size: 12px; font-weight: 800; }
+.addPlayerRow { display: flex; gap: 10px; }
+.addPlayerRow input { min-width: 0; flex: 1; min-height: 48px; padding: 0 13px; border: 1px solid #cbdbe4; border-radius: 11px; background: #fbfdfe; color: #17384b; font: inherit; font-size: 14px; }
+.addPlayerRow input:focus { border-color: #0099d9; outline: 3px solid rgba(0, 153, 217, .14); }
+.addPlayerRow button, .audienceActions button, .audienceActions a { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 15px; border: 1px solid #d6e1e8; border-radius: 11px; background: #fff; color: #466173; font: inherit; font-size: 12px; font-weight: 800; text-decoration: none; cursor: pointer; }
+.addPlayerRow button { border-color: #007da9; background: #007da9; color: #fff; }
+.addPlayerRow button:disabled { cursor: wait; opacity: .55; }
+.playerRoster { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.playerRoster span { padding: 8px 11px; border-radius: 999px; background: #edf6f9; color: #315d70; font-size: 12px; font-weight: 750; }
+.audienceCard { display: grid; justify-items: center; text-align: center; }
+.audienceCard > div:first-child { width: 100%; text-align: left; }
+.audienceQrFrame { display: grid; place-items: center; width: min(100%, 252px); aspect-ratio: 1; margin-top: 18px; padding: 14px; border: 1px solid #e7eef2; border-radius: 15px; background: #fff; }
+.audienceQrFrame canvas { display: block; width: 100% !important; height: auto !important; }
+.audienceUrl { width: 100%; margin-top: 13px; overflow-wrap: anywhere; color: #738691; font-size: 11px; }
+.audienceActions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; width: 100%; margin-top: 13px; }
+.audienceActions a { border-color: #c8e4ed; background: #eaf8fc; color: #007da9; }
+.note { margin: 17px 0 0; text-align: center; }
+.footer { margin-top: 25px; text-align: center; }
+.footer a { color: #007da9; font-size: 12px; font-weight: 750; text-decoration: none; }
+@media (max-width: 620px) { .main { width: min(100% - 24px, 560px); padding-top: 16px; } .hero { display: block; margin-top: 42px; } .phaseBadge { margin-top: 18px; } .resultRow { grid-template-columns: 1fr; gap: 10px; } }
+@media (max-width: 440px) { .main { width: min(100% - 20px, 440px); } .backLink, .audienceLink { padding: 0 9px; } .topbarActions { gap: 5px; } .controlCard, .resultsCard, .playersCard, .audienceCard { padding: 20px 15px; } .phaseButtons { gap: 8px; } .addPlayerRow { flex-direction: column; } .addPlayerRow button { width: 100%; } }

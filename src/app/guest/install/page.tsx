@@ -13,12 +13,14 @@ export default function InstallPage() {
   const [promptEvent, setPromptEvent] = useState<InstallPromptEvent | null>(null);
   const [isIOS, setIsIOS] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [afterSignup, setAfterSignup] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     const standalone = window.matchMedia("(display-mode: standalone)").matches || Boolean((navigator as Navigator & { standalone?: boolean }).standalone);
     setIsInstalled(standalone);
     setIsIOS(/iphone|ipad|ipod/i.test(navigator.userAgent));
+    setAfterSignup(new URLSearchParams(window.location.search).get("afterSignup") === "1");
 
     const handlePrompt = (event: Event) => {
       event.preventDefault();
@@ -58,7 +60,7 @@ export default function InstallPage() {
         </section> : null}
 
         {message ? <p className={styles.message} role="status">{message}</p> : null}
-        <div className={styles.actions}><Link className={styles.primaryLink} href="/guest/scan">QRコードで参加する</Link><Link className={styles.secondaryLink} href="/guest">あとで設定する</Link></div>
+        <div className={styles.actions}><Link className={styles.primaryLink} href={afterSignup ? "/dashboard" : "/guest/scan"}>{afterSignup ? "参加画面へ進む" : "QRコードで参加する"}</Link><Link className={styles.secondaryLink} href={afterSignup ? "/dashboard" : "/guest"}>あとで設定する</Link></div>
       </section>
     </main>
   );

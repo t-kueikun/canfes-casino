@@ -1,0 +1,5 @@
+.next
+.next-*
+graphify-out
+*.tsbuildinfo
+scratch-ts-check.ts

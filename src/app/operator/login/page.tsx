@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { getSupabaseClient } from "@/lib/supabase";
 import styles from "./page.module.css";
 
 export default function OperatorLoginPage() {
@@ -10,12 +10,18 @@ export default function OperatorLoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [invitePassword, setInvitePassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const getNextPath = () => {
+    const next = new URLSearchParams(window.location.search).get("next");
+    return next && next.startsWith("/") && !next.startsWith("//") && (next.startsWith("/operator/") || next.startsWith("/rewards/redeem")) ? next : "/operator";
+  };
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) router.replace("/operator");
+    getSupabaseClient().auth.getSession().then(({ data: { session } }) => {
+      if (session) router.replace(getNextPath());
     });
   }, [router]);
 
@@ -23,23 +29,33 @@ export default function OperatorLoginPage() {
     event.preventDefault();
     setLoading(true);
     setMessage("");
+    const client = getSupabaseClient();
     const result = mode === "login"
-      ? await supabase.auth.signInWithPassword({ email, password })
-      : await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/operator/login`,
-        },
+      ? await client.auth.signInWithPassword({ email, password })
+      : await fetch("/api/operator/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, invitePassword }),
+      }).then(async (response) => {
+        const body = await response.json().catch(() => ({})) as {
+          error?: string;
+          requiresEmailConfirmation?: boolean;
+          session?: { access_token: string; refresh_token: string } | null;
+        };
+        if (!response.ok) return { error: new Error(body.error ?? "運営アカウントの作成に失敗しました") };
+        if (body.session) {
+          await client.auth.setSession(body.session);
+        }
+        return { error: null, data: { session: body.session, requiresEmailConfirmation: body.requiresEmailConfirmation } };
       });
 
     if (result.error) {
       setMessage(result.error.message);
     } else if (mode === "signup") {
-      setMessage("運営アカウントを作成しました。確認メールが必要な場合はメールを確認してください。");
-      if (result.data.session) router.replace("/operator");
+      setMessage("運営アカウントを作成しました。確認メールが届いたらリンクを開いてください。");
+      if (result.data.session) router.replace(getNextPath());
     } else {
-      router.replace("/operator");
+      router.replace(getNextPath());
     }
     setLoading(false);
   };
@@ -56,7 +72,7 @@ export default function OperatorLoginPage() {
           </div>
         </div>
         <h1 id="operator-login-title">運営ログイン</h1>
-        <p className={styles.lead}>QRコードの発行やビンゴ進行を管理します。</p>
+        <p className={styles.lead}>QRコードの発行や景品受け取りを管理します。</p>
 
         <form className={styles.form} onSubmit={submit}>
           <label>
@@ -67,13 +83,19 @@ export default function OperatorLoginPage() {
             <span>パスワード</span>
             <input type="password" required minLength={6} value={password} onChange={(event) => setPassword(event.target.value)} autoComplete={mode === "login" ? "current-password" : "new-password"} />
           </label>
+          {mode === "signup" ? (
+            <label>
+              <span>運営招待パスワード</span>
+              <input type="password" required value={invitePassword} onChange={(event) => setInvitePassword(event.target.value)} autoComplete="off" />
+            </label>
+          ) : null}
           {message ? <p className={styles.message} role="alert">{message}</p> : null}
           <button className={styles.submitButton} type="submit" disabled={loading}>
             {loading ? "処理中…" : mode === "login" ? "ログイン" : "運営アカウントを作成"}
           </button>
         </form>
 
-        <button className={styles.modeButton} type="button" onClick={() => { setMode(mode === "login" ? "signup" : "login"); setMessage(""); }}>
+        <button className={styles.modeButton} type="button" onClick={() => { setMode(mode === "login" ? "signup" : "login"); setInvitePassword(""); setMessage(""); }}>
           {mode === "login" ? "運営アカウントを新規作成" : "ログインに戻る"}
         </button>
       </section>

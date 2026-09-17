@@ -16,6 +16,8 @@ type QrReader = {
   scanFile: (file: File, showImage: boolean) => Promise<string>;
 };
 
+const GUEST_ONBOARDED_STORAGE_KEY = "canfes.guest-onboarded";
+
 function extractCode(raw: string) {
   const value = raw.trim();
   try {
@@ -33,13 +35,14 @@ function GuestScan() {
   const displayNameRef = useRef("");
   const loadingRef = useRef(false);
   const [displayName, setDisplayName] = useState("");
+  const [pendingCode, setPendingCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [cameraState, setCameraState] = useState<"idle" | "starting" | "active">("idle");
   const [cameraError, setCameraError] = useState("");
   const [message, setMessage] = useState("");
 
-  const claimCode = useCallback(async (rawCode: string) => {
-    const code = extractCode(rawCode);
+  const claimCode = useCallback(async () => {
+    const code = pendingCode;
     if (!code || loadingRef.current) return;
     loadingRef.current = true;
     setLoading(true);
@@ -55,19 +58,38 @@ function GuestScan() {
         setMessage(body.error ?? "このQRコードは利用できません。運営に確認してください。");
         return;
       }
-      router.replace("/dashboard");
+      try {
+        window.localStorage.setItem(GUEST_ONBOARDED_STORAGE_KEY, "1");
+      } catch {
+        // The server-side onboarding cookie remains the source of truth.
+      }
+      router.replace("/guest/install?afterSignup=1");
     } catch {
       setMessage("通信に失敗しました。電波を確認して、もう一度お試しください。");
     } finally {
       loadingRef.current = false;
       setLoading(false);
     }
-  }, [router]);
+  }, [pendingCode, router]);
 
   useEffect(() => {
     const code = searchParams.get("code");
-    if (code) void claimCode(code);
-  }, [claimCode, searchParams]);
+    if (code) setPendingCode(extractCode(code));
+  }, [searchParams]);
+
+  const acceptScannedCode = (rawCode: string) => {
+    const code = extractCode(rawCode);
+    if (!code) {
+      setMessage("参加登録用のQRコードを読み取ってください。");
+      return;
+    }
+    setMessage("");
+    setPendingCode(code);
+    const reader = scannerRef.current;
+    if (reader && cameraState === "active") {
+      void reader.stop().catch(() => undefined).finally(() => setCameraState("idle"));
+    }
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -100,7 +122,7 @@ function GuestScan() {
       await reader.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 240, height: 240 }, aspectRatio: 1 },
-        (decodedText) => void claimCode(decodedText),
+        (decodedText) => acceptScannedCode(decodedText),
         () => undefined,
       );
       setCameraState("active");
@@ -124,7 +146,7 @@ function GuestScan() {
     setMessage("");
     try {
       const decodedText = await reader.scanFile(file, true);
-      void claimCode(decodedText);
+      acceptScannedCode(decodedText);
     } catch {
       setMessage("QRコードを読み取れませんでした。画像を確認して、もう一度お試しください。");
     }
@@ -137,25 +159,33 @@ function GuestScan() {
         <div className={styles.heroCopyCompact}>
           <p className={styles.eyebrow}>STEP 1 / 2</p>
           <h1 id="guest-scan-title">QRコードを<br /><span>読み取る</span></h1>
-          <p className={styles.lead}>運営から受け取ったQRコードをカメラに映してください。</p>
+          <p className={styles.lead}>{pendingCode ? "表示名を入力して、参加登録を完了してください。" : "運営から受け取ったQRコードを読み取ってください。"}</p>
         </div>
 
         <div className={styles.entryForm}>
-          <label className={styles.nameField}>
-            <span>表示名 <em>任意</em></span>
-            <input
-              value={displayName}
-              onChange={(event) => {
-                displayNameRef.current = event.target.value;
-                setDisplayName(event.target.value);
-              }}
-              maxLength={40}
-              placeholder="会場で表示する名前"
-              autoComplete="nickname"
-            />
-          </label>
-
-          <div className={styles.scannerPanel}>
+          {pendingCode ? <>
+            <p className={styles.statusMessage} role="status">参加登録用QRを読み取りました。</p>
+            <label className={styles.nameField}>
+              <span>表示名</span>
+              <input
+                value={displayName}
+                onChange={(event) => {
+                  displayNameRef.current = event.target.value;
+                  setDisplayName(event.target.value);
+                }}
+                maxLength={40}
+                placeholder="会場で表示する名前"
+                autoComplete="nickname"
+                autoFocus
+                required
+              />
+            </label>
+            <button className={styles.primaryButton} onClick={() => void claimCode()} disabled={loading || !displayName.trim()} type="button">
+              {loading ? "登録しています…" : "参加登録する"}
+            </button>
+            <button className={styles.secondaryButton} onClick={() => { setPendingCode(""); setMessage(""); }} type="button">別のQRを読み取る</button>
+          </> : null}
+          <div className={styles.scannerPanel} hidden={Boolean(pendingCode)}>
             <div id="canfes-guest-qr-reader" className={styles.scanReader} aria-label="QRコード読み取り画面" />
             <div className={styles.scannerActions}>
               {cameraState === "active" ? (
@@ -173,7 +203,6 @@ function GuestScan() {
           </div>
 
           {cameraError ? <p className={styles.errorMessage} role="alert">{cameraError}</p> : null}
-          {loading ? <p className={styles.statusMessage} aria-live="polite">参加登録を確認しています…</p> : null}
           {message ? <p className={styles.errorMessage} role="alert">{message}</p> : null}
         </div>
 

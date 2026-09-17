@@ -19,7 +19,9 @@ export default function InitSettings() {
 
       const isSecureContext = window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       if ('serviceWorker' in navigator && isSecureContext) {
-        void navigator.serviceWorker.register('/sw.js').catch(() => undefined);
+        void navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then((registration) => {
+          void registration.update();
+        }).catch(() => undefined);
       }
     } catch {}
   }, []);

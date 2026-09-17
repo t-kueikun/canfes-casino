@@ -1,0 +1,18 @@
+.page { display: grid; place-items: center; min-height: 100svh; padding: 20px; background: #f4f7f9; color: #17384b; }
+.card { width: min(100%, 460px); padding: 25px; border: 1px solid #e1eaf0; border-radius: 20px; background: #fff; box-shadow: 0 10px 30px rgba(23, 56, 75, .06); }
+.brand { color: #007da9; font-size: 12px; font-weight: 900; text-decoration: none; }
+.eyebrow { margin: 28px 0 7px; color: #008cc6; font-size: 10px; font-weight: 850; letter-spacing: .15em; }
+.card h1 { margin: 0 0 12px; color: #102f42; font-size: clamp(27px, 7vw, 34px); letter-spacing: -.045em; }
+.copy { color: #6b808c; font-size: 13px; line-height: 1.7; }
+.copy strong { color: #17384b; }
+.rewardBox { display: grid; gap: 7px; margin: 20px 0; padding: 17px; border: 1px solid #efdfbd; border-radius: 14px; background: #fffbf2; }
+.rewardBox span { color: #a07730; font-size: 11px; font-weight: 800; }
+.rewardBox strong { color: #513d1b; font-size: 17px; }
+.primaryButton, .secondaryButton { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 50px; margin-top: 10px; border: 0; border-radius: 12px; font-size: 13px; font-weight: 850; text-decoration: none; cursor: pointer; }
+.primaryButton { background: #007da9; color: #fff; }
+.primaryButton:disabled { opacity: .55; cursor: wait; }
+.secondaryButton { border: 1px solid #d5e1e7; background: #fff; color: #436375; }
+.doneIcon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 15px; border-radius: 50%; background: #dff3e6; color: #287554; font-size: 25px; font-weight: 900; }
+.notice { padding: 12px; border-radius: 11px; background: #eff8f2; color: #287554; font-size: 12px; font-weight: 750; }
+.error { padding: 12px; border-radius: 11px; background: #fff2f0; color: #b3473c; font-size: 12px; font-weight: 750; line-height: 1.6; }
+.footerNote { margin: 20px 0 0; color: #96a4ab; font-size: 10px; text-align: center; }

@@ -1,0 +1,47 @@
+.page { min-height: 100svh; background: #f7f9fc; color: #17384b; }
+.main { width: min(100% - 32px, 440px); margin: 0 auto; padding: 20px 0 150px; }
+.header { display: flex; align-items: center; justify-content: space-between; }
+.backLink { color: #007da9; font-size: 13px; font-weight: 800; text-decoration: none; }
+.headerLabel { color: #9aa9b2; font-size: 10px; font-weight: 850; letter-spacing: .18em; }
+.intro { margin: 46px 0 24px; }
+.eyebrow, .sectionKicker { margin: 0 0 9px; color: #008cc6; font-size: 10px; font-weight: 850; letter-spacing: .14em; }
+.intro h1 { margin: 0; color: #102f42; font-size: clamp(28px, 8vw, 38px); line-height: 1.18; letter-spacing: -.05em; }
+.intro h1 span { color: #007da9; }
+.copy { margin: 13px 0 0; color: #718491; font-size: 13px; line-height: 1.7; }
+.error { padding: 12px 14px; border-radius: 11px; background: #fff2f0; color: #b3473c; font-size: 13px; font-weight: 700; }
+.balanceCard { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-bottom: 30px; overflow: hidden; border: 1px solid #e1eaf0; border-radius: 16px; background: #e1eaf0; box-shadow: 0 7px 20px rgba(23, 56, 75, .045); }
+.balanceCard div { display: grid; gap: 6px; padding: 16px; background: #fff; }
+.balanceCard span { color: #81919b; font-size: 11px; font-weight: 750; }
+.balanceCard strong { color: #102f42; font-size: 21px; letter-spacing: -.04em; }
+.sectionHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+.sectionKicker { display: block; margin-bottom: 5px; }
+.sectionHeader h2 { margin: 0; color: #17384b; font-size: 22px; letter-spacing: -.04em; }
+.noDeduction { flex: 0 0 auto; padding: 7px 9px; border-radius: 999px; background: #eaf7ef; color: #287554; font-size: 10px; font-weight: 800; }
+.state { padding: 25px 0; color: #8998a1; font-size: 13px; text-align: center; }
+.rewardList { display: grid; gap: 12px; }
+.rewardCard { padding: 19px; border: 1px solid #e1eaf0; border-radius: 16px; background: #fff; box-shadow: 0 7px 20px rgba(23, 56, 75, .045); }
+.rewardCardEligible { border-color: #f0d49a; background: linear-gradient(145deg, #fffaf0, #fff); }
+.rewardCardClaimed { border-color: #bde4cb; background: linear-gradient(145deg, #f1fbf5, #fff); }
+.rewardTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.threshold { color: #17384b; font-size: 30px; font-weight: 900; letter-spacing: -.06em; }
+.threshold small { font-size: 13px; letter-spacing: 0; }
+.claimedBadge, .eligibleBadge, .lockedBadge { padding: 6px 9px; border-radius: 999px; font-size: 10px; font-weight: 850; }
+.claimedBadge { background: #dff3e6; color: #287554; }
+.eligibleBadge { background: #fff0c9; color: #a46a13; }
+.lockedBadge { background: #eff2f4; color: #87959c; }
+.rewardCard h3 { margin: 11px 0 6px; color: #17384b; font-size: 15px; }
+.rewardCard p { margin: 0; color: #7c8d97; font-size: 12px; line-height: 1.7; }
+.rewardCard p strong { color: #007da9; }
+.readyCopy { color: #9a6c1b !important; font-weight: 750; }
+.rewardQrButton { width: 100%; min-height: 44px; margin-top: 14px; border: 0; border-radius: 11px; background: #007da9; color: #fff; font-size: 12px; font-weight: 850; cursor: pointer; }
+.rewardQrButton:disabled { opacity: .55; cursor: wait; }
+.rewardQrPanel { display: grid; justify-items: center; gap: 8px; margin-top: 13px; padding: 14px; border: 1px solid #e3edf1; border-radius: 13px; background: #fbfdfe; text-align: center; }
+.rewardQr { display: grid; place-items: center; max-width: 100%; padding: 8px; border-radius: 10px; background: #fff; }
+.rewardQr canvas { display: block; width: min(58vw, 220px) !important; height: auto !important; }
+.rewardQrPanel p { max-width: 280px; margin: 0; color: #718491; font-size: 11px; line-height: 1.6; }
+.dismissQr { padding: 7px 10px; border: 0; background: transparent; color: #007da9; font-size: 11px; font-weight: 800; cursor: pointer; }
+.note { margin-top: 15px; padding: 15px 16px; border-radius: 13px; background: #eef7fb; color: #53717e; }
+.note strong { color: #17647e; font-size: 12px; }
+.note p { margin: 6px 0 0; font-size: 11px; line-height: 1.7; }
+.footer { position: fixed; right: 0; bottom: 0; left: 0; display: flex; justify-content: center; padding: 0 1rem 1rem; z-index: 50; }
+@media (max-width: 380px) { .main { width: min(100% - 20px, 440px); } .balanceCard strong { font-size: 18px; } .noDeduction { font-size: 9px; } }
