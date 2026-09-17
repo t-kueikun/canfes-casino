@@ -62,11 +62,16 @@ export default function DashboardScanPage() {
       // always open the payment page on the host currently running the app.
       if (url.pathname.replace(/\/$/, "") === "/dashboard/payment") {
         const mode = url.searchParams.get("mode");
-        if (mode === "purchase" || mode === "refund") target = `/dashboard/payment?mode=${mode}`;
+        const token = url.searchParams.get("token");
+        if (token && (mode === "refund" || !mode)) {
+          target = `/dashboard/payment?mode=refund&token=${encodeURIComponent(token)}`;
+        } else if (mode === "purchase") {
+          target = "/dashboard/payment?mode=purchase";
+        }
       }
     } catch { /* invalid QR content */ }
     if (!target) {
-      setError("購入または払い戻し用の受付QRを読み取ってください。");
+      setError("チップ購入QR、または運営が発行した払い戻しQRを読み取ってください。");
       return;
     }
     handledRef.current = true;
@@ -122,7 +127,7 @@ export default function DashboardScanPage() {
       <section className={styles.card}>
         <p className={styles.eyebrow}>CHIP SERVICE</p>
         <h1>受付QRを<br /><span>スキャン</span></h1>
-        <p className={styles.copy}>スタッフの購入または払い戻しQRを読み取ると、金額入力画面に進みます。</p>
+        <p className={styles.copy}>購入QRは金額入力、払い戻しQRは運営が入力したチップ数の受け取り画面に進みます。</p>
         <div id="canfes-payment-qr-reader" className={styles.reader} aria-label="受付QRコード読み取り画面" />
         {cameraState === "active" ? <button className={styles.secondaryButton} type="button" onClick={() => void stopCamera()}>カメラを停止</button> : <button className={styles.primaryButton} type="button" disabled={!ready || cameraState === "starting"} onClick={() => void startCamera()}>{cameraState === "starting" ? "カメラを起動しています…" : ready ? "カメラを起動する" : "読み取り画面を準備中…"}</button>}
         <label className={styles.imageButton}>QR画像から読み取る<input type="file" accept="image/*" onChange={(event) => { const file = event.target.files?.[0]; if (file) void scanImage(file); event.currentTarget.value = ""; }} /></label>

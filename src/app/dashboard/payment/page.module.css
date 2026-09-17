@@ -11,6 +11,8 @@
 .modeSwitch { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 22px; padding: 4px; border-radius: 13px; background: #f0f5f8; }
 .modeButton, .modeActive { min-height: 42px; border: 0; border-radius: 10px; color: #6b7f8b; background: transparent; font-size: 13px; font-weight: 800; cursor: pointer; }
 .modeActive { color: #fff; background: #007da9; box-shadow: 0 4px 12px rgba(0, 125, 169, .2); }
+.modeDisabled { display: grid; place-items: center; min-height: 42px; border-radius: 10px; color: #9aa9b2; font-size: 12px; font-weight: 750; }
+.refundBanner { margin: 0 0 22px; padding: 11px 13px; border-radius: 11px; background: #eaf4f8; color: #28718a; font-size: 12px; font-weight: 800; text-align: center; }
 .balanceLine { display: flex; align-items: center; justify-content: space-between; margin: 0 2px 22px; color: #70838e; font-size: 12px; font-weight: 700; }
 .balanceLine strong { color: #17384b; font-size: 17px; }
 .amountLabel { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; color: #24485c; font-size: 13px; font-weight: 800; }

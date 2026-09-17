@@ -91,7 +91,7 @@ function PaymentConfirmation() {
             <button className={styles.secondaryButton} type="button" onClick={() => void loadPayment()}>もう一度確認</button>
           </> : payment ? <>
             <h1>{label}</h1>
-            <dl className={styles.details}><div><dt>参加者</dt><dd>{payment.display_name}さん</dd></div><div><dt>金額</dt><dd>{payment.amount.toLocaleString()} CF</dd></div><div><dt>取引内容</dt><dd>{payment.mode === "purchase" ? "残高にCFを加算" : "残高からCFを差し引き"}</dd></div></dl>
+            <dl className={styles.details}><div><dt>参加者</dt><dd>{payment.display_name}さん</dd></div><div><dt>金額</dt><dd>{payment.amount.toLocaleString()} CF</dd></div><div><dt>取引内容</dt><dd>{payment.mode === "purchase" ? "残高からCFを差し引き" : "残高にCFを加算"}</dd></div></dl>
             {payment.completed ? <p className={styles.notice}>このQRの取引はすでに確定しています。</p> : <>
               <p className={styles.confirmCopy}>{payment.mode === "purchase" ? "現金を受け取った後に確定してください。" : "現金を渡した後に確定してください。"}</p>
               <button className={styles.primaryButton} type="button" onClick={() => void confirmPayment()} disabled={submitting}>{submitting ? "処理しています…" : "現金の受け渡しを確認して確定"}</button>

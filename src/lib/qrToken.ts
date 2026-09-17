@@ -16,7 +16,14 @@ export type RewardQrPayload = {
   expiresAt: number;
 };
 
-export type QrPayload = PaymentQrPayload | RewardQrPayload;
+export type OperatorRefundQrPayload = {
+  type: "refund";
+  requestId: string;
+  amount: number;
+  expiresAt: number;
+};
+
+export type QrPayload = PaymentQrPayload | RewardQrPayload | OperatorRefundQrPayload;
 
 function getSigningKey() {
   const secret = process.env.CANFES_QR_SIGNING_SECRET
@@ -67,6 +74,15 @@ export function readQrToken(value: unknown): QrPayload | null {
     if (payload.type === "reward") {
       if (typeof payload.accountId !== "string" || (payload.threshold !== 1000 && payload.threshold !== 3000)) return null;
       return payload as RewardQrPayload;
+    }
+    if (payload.type === "refund") {
+      if (
+        typeof payload.requestId !== "string"
+        || !Number.isInteger(payload.amount)
+        || Number(payload.amount) < 1
+        || Number(payload.amount) > 100000
+      ) return null;
+      return payload as OperatorRefundQrPayload;
     }
   } catch {
     return null;
