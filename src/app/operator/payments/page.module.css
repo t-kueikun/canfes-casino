@@ -7,11 +7,11 @@
 .brand strong { font-size: 14px; }
 .brand small { margin-top: 2px; color: #8899a3; font-size: 9px; font-weight: 850; letter-spacing: .14em; }
 .backLink { color: #007da9; font-size: 12px; font-weight: 800; text-decoration: none; }
-.intro { max-width: 600px; margin: 48px 0 25px; }
+.intro { max-width: 600px; margin: 48px auto 25px; text-align: center; }
 .eyebrow, .kicker { color: #008cc6; font-size: 10px; font-weight: 850; letter-spacing: .15em; }
 .intro h1 { margin: 7px 0 10px; color: #102f42; font-size: clamp(28px, 5vw, 40px); letter-spacing: -.045em; }
 .intro p { margin: 0; color: #6f828e; font-size: 13px; line-height: 1.75; }
-.standList { display: grid; grid-template-columns: minmax(0, 480px); gap: 16px; }
+.standList { display: grid; grid-template-columns: minmax(0, 480px); justify-content: center; gap: 16px; margin: 0 auto; }
 .standCard { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px; border: 1px solid #e1eaf0; border-radius: 18px; background: #fff; box-shadow: 0 8px 25px rgba(23, 56, 75, .05); text-align: center; }
 .standCard > div:first-child { align-self: stretch; text-align: left; }
 .standCard h2 { margin: 5px 0 7px; color: #17384b; font-size: 20px; }
