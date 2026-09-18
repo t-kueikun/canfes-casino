@@ -57,7 +57,7 @@ export default function OperatorWerewolfPage() {
 
   useEffect(() => {
     if (!data) return;
-    const timer = window.setInterval(() => void load(), 5000);
+    const timer = window.setInterval(() => void load(), 2000);
     return () => window.clearInterval(timer);
   }, [data, load]);
 
@@ -172,7 +172,7 @@ export default function OperatorWerewolfPage() {
           <code className={styles.audienceUrl}>{audienceUrl}</code>
           <div className={styles.audienceActions}><button type="button" onClick={() => void copyAudienceUrl()}>{copiedAudienceUrl ? "コピーしました ✓" : "URLをコピー"}</button><Link href="/werewolf" target="_blank">観客ページを開く ↗</Link></div>
         </section>
-        <p className={styles.note}>投票の更新は約5秒ごとに反映されます。人狼の正解はこの画面では判定しません。</p>
+        <p className={styles.note}>投票の更新は約2秒ごとに反映されます。人狼の正解はこの画面では判定しません。</p>
         <footer className={styles.footer}><Link href="/operator">運営トップへ戻る →</Link></footer>
       </main>
     </div>
