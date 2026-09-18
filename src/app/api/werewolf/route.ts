@@ -10,6 +10,12 @@ import {
 export const dynamic = "force-dynamic";
 
 type WerewolfState = { phase: "night" | "day"; round: number; updated_at: string };
+type WerewolfData = { state: WerewolfState; players: { id: string; display_name: string }[] };
+
+// Audience clients poll together. Reuse the public roster briefly within a warm
+// server instance while still returning a fresh voter cookie to each browser.
+let cachedWerewolfData: { value: WerewolfData; expiresAt: number } | null = null;
+let pendingWerewolfData: Promise<WerewolfData> | null = null;
 
 function databaseErrorMessage(error: any) {
   if (error?.code === "42P01" && String(error.message).includes("canfes_werewolf")) {
@@ -18,17 +24,30 @@ function databaseErrorMessage(error: any) {
   return "人狼の進行情報を読み込めませんでした";
 }
 
-async function readWerewolfData() {
-  const admin = getSupabaseServiceClient() as any;
-  const [{ data: state, error: stateError }, { data: players, error: playersError }] = await Promise.all([
-    admin.from("canfes_werewolf_state").select("phase, round, updated_at").eq("id", 1).maybeSingle(),
-    admin.from("canfes_werewolf_players").select("id, display_name").eq("active", true).order("created_at", { ascending: true }).limit(1000),
-  ]);
-  if (stateError || playersError) throw stateError ?? playersError;
-  return {
-    state: (state ?? { phase: "night", round: 0, updated_at: new Date().toISOString() }) as WerewolfState,
-    players: (players ?? []).map((player: { id: string; display_name: string }) => ({ id: player.id, display_name: player.display_name || "参加者" })),
-  };
+async function readWerewolfData(): Promise<WerewolfData> {
+  if (cachedWerewolfData && cachedWerewolfData.expiresAt > Date.now()) return cachedWerewolfData.value;
+  if (pendingWerewolfData) return pendingWerewolfData;
+
+  pendingWerewolfData = (async () => {
+    const admin = getSupabaseServiceClient() as any;
+    const [{ data: state, error: stateError }, { data: players, error: playersError }] = await Promise.all([
+      admin.from("canfes_werewolf_state").select("phase, round, updated_at").eq("id", 1).maybeSingle(),
+      admin.from("canfes_werewolf_players").select("id, display_name").eq("active", true).order("created_at", { ascending: true }).limit(1000),
+    ]);
+    if (stateError || playersError) throw stateError ?? playersError;
+    const value = {
+      state: (state ?? { phase: "night", round: 0, updated_at: new Date().toISOString() }) as WerewolfState,
+      players: (players ?? []).map((player: { id: string; display_name: string }) => ({ id: player.id, display_name: player.display_name || "参加者" })),
+    };
+    cachedWerewolfData = { value, expiresAt: Date.now() + 2000 };
+    return value;
+  })();
+
+  try {
+    return await pendingWerewolfData;
+  } finally {
+    pendingWerewolfData = null;
+  }
 }
 
 export async function GET(request: Request) {
