@@ -90,6 +90,10 @@
 .heroLinks a, .textLink, .footerLinks a { color: #007da9; font-size: 13px; font-weight: 750; text-decoration: none; }
 .heroLinks a { padding: 10px 14px; border-radius: 10px; background: #e6f5fb; }
 .heroLinks a:hover, .textLink:hover, .footerLinks a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.heroIssueButton { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 0 13px; border: 1px solid #c6e4ee; border-radius: 10px; background: #e6f5fb; color: #007da9; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.heroIssueButton:hover:not(:disabled) { border-color: #77bdcf; background: #dff3f9; }
+.heroIssueButton:disabled { cursor: wait; opacity: .65; }
+.heroIssueButton > span:last-child { font-size: 16px; line-height: 1; }
 
 .statsGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
 .statCard { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 16px 18px; border: 1px solid #e1eaf0; border-radius: 15px; background: #fff; box-shadow: 0 5px 18px rgba(23, 56, 75, .04); }
@@ -114,6 +118,23 @@
 .detailsCard > .attendanceCard, .detailsCard > .historyCard { margin: 0; border: 0; border-top: 1px solid #edf2f5; border-radius: 0 0 14px 14px; box-shadow: none; }
 .card { border: 1px solid #e1eaf0; border-radius: 18px; background: #fff; box-shadow: 0 8px 26px rgba(23, 56, 75, .055); }
 .issueCard, .historyCard { padding: 26px; }
+.actionCard { padding: 26px; }
+.actionGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 22px; }
+.actionButton { position: relative; display: grid; align-content: center; gap: 8px; min-height: 132px; padding: 20px; border: 1px solid #c9e1e9; border-radius: 15px; background: #f1fbfd; color: #075c7e; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+.actionButton:hover { border-color: #70bdd0; box-shadow: 0 8px 20px rgba(0, 125, 169, .12); transform: translateY(-2px); }
+.actionButton strong { max-width: 180px; font-size: 16px; line-height: 1.35; }
+.actionButton span { color: #6d818d; font-size: 11px; line-height: 1.45; }
+.actionButton b { position: absolute; right: 18px; bottom: 16px; color: #008cc6; font-size: 19px; }
+.actionButtonBlue { border-color: #b9d8ef; background: #f0f7ff; color: #155d91; }
+.actionButtonBlue b { color: #277bb0; }
+.actionButtonWarm { border-color: #ecd8b1; background: #fffaf0; color: #8a611f; }
+.actionButtonWarm b { color: #b47c22; }
+.issueSettings { margin-top: 22px; padding-top: 20px; border-top: 1px solid #edf2f5; }
+.issueSettingsHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.issueSettingsHeader div { display: grid; gap: 4px; }
+.issueSettingsHeader strong { color: #526a78; font-size: 12px; }
+.issueSettingsHeader span { color: #8a9aa4; font-size: 11px; }
+.issueSettingsHeader > b { color: #007da9; font-size: 18px; }
 .attendanceCard { margin-bottom: 16px; padding: 24px 26px; }
 .attendanceHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .attendanceHeader h2 { margin: 0; color: #17384b; font-size: 20px; letter-spacing: -.025em; }
@@ -199,8 +220,10 @@
   .main { width: min(100% - 24px, 560px); padding-top: 16px; }
   .hero { display: block; margin-top: 42px; }
   .heroLinks { margin-top: 18px; }
-  .heroLinks a { flex: 1; text-align: center; }
+  .heroLinks { justify-content: flex-start; }
   .contentGrid { grid-template-columns: 1fr; }
+  .actionGrid { grid-template-columns: 1fr; }
+  .actionButton { min-height: 92px; }
   .statsGrid { gap: 8px; }
   .statCard { padding: 13px 12px; }
   .statCard strong { font-size: 23px; }
@@ -216,7 +239,7 @@
   .logoutButton { min-height: 34px; padding: 0 10px; }
   .hero h1 { font-size: 30px; }
   .heroCopy { font-size: 13px; }
-  .issueCard, .historyCard, .issuedCard, .attendanceCard { padding: 20px 16px; }
+  .issueCard, .actionCard, .historyCard, .issuedCard, .attendanceCard { padding: 20px 16px; }
   .cardHeader h2, .issuedHeader h2, .historyHeader h2 { font-size: 18px; }
   .attendanceHeader { display: block; }
   .attendanceStatus { margin-top: 15px; }
@@ -227,4 +250,6 @@
   .resultActions { display: grid; grid-template-columns: 1fr; }
   .primaryLink, .resultActions .secondaryButton { width: 100%; }
   .historyItemActions { align-items: flex-end; flex-direction: column; gap: 5px; }
+  .actionButton strong { font-size: 15px; }
+  .issueSettingsHeader > b { font-size: 16px; }
 }

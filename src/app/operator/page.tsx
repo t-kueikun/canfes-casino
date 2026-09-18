@@ -255,9 +255,9 @@ export default function OperatorPage() {
             <p className={styles.heroCopy}>参加者全員で使える共通受付QRを表示できます（1端末につき1回）。</p>
           </div>
           <div className={styles.heroLinks}>
-            <Link href="/operator/scan">QRを読み取る</Link>
-            <Link href="/operator/payments">チップ購入QRを表示</Link>
-            <Link href="/operator/payments/refund">チップ払い戻しQRを発行</Link>
+            <button className={styles.heroIssueButton} type="button" onClick={() => void issueCode()} disabled={loading}>
+              {loading ? <><span className={styles.spinner} />発行中…</> : <>共通QRを発行 <span>↗</span></>}
+            </button>
           </div>
         </section>
 
@@ -277,19 +277,23 @@ export default function OperatorPage() {
         {message ? <div className={`${styles.notice} ${message.type === "error" ? styles.noticeError : styles.noticeSuccess}`} role="status">{message.type === "error" ? "!" : "✓"}<span>{message.text}</span></div> : null}
 
         <div className={styles.contentGrid}>
-          <section className={`${styles.card} ${styles.issueCard}`}>
+          <section className={`${styles.card} ${styles.actionCard}`} aria-labelledby="operator-actions-title">
             <div className={styles.cardHeader}>
-              <div><h2>共通受付QRを発行</h2><p>同じQRを会場に掲示し、参加者ごとに1回だけアカウントを作成できます。</p></div>
+              <div><span className={styles.cardKicker}>QUICK ACTIONS</span><h2 id="operator-actions-title">運営メニュー</h2><p>よく使う操作を選んでください。</p></div>
             </div>
-            <div className={styles.formField}>
-              <label htmlFor="initial-amount">初期CF</label>
-              <div className={styles.amountInput}><input id="initial-amount" type="number" min={0} max={100000} value={amount} onChange={(event) => setAmount(Number(event.target.value))} /><span>CF</span></div>
+            <div className={styles.actionGrid}>
+              <Link className={styles.actionButton} href="/operator/scan"><strong>QRを読み取る</strong><span>参加者・決済QRをスキャン</span><b>→</b></Link>
+              <Link className={`${styles.actionButton} ${styles.actionButtonBlue}`} href="/operator/payments"><strong>チップ購入QRを表示</strong><span>参加者に購入画面を案内</span><b>→</b></Link>
+              <Link className={`${styles.actionButton} ${styles.actionButtonWarm}`} href="/operator/payments/refund"><strong>チップ払い戻しQRを表示</strong><span>払い戻し用QRを発行</span><b>→</b></Link>
+            </div>
+            <div className={styles.issueSettings}>
+              <div className={styles.issueSettingsHeader}><div><strong>共通受付QRの初期CF</strong><span>右上のボタンから発行・再表示できます</span></div><b>{amount.toLocaleString()} CF</b></div>
+              <div className={styles.amountInput}><input id="initial-amount" aria-label="共通受付QRの初期CF" type="number" min={0} max={100000} value={amount} onChange={(event) => setAmount(Number(event.target.value))} /><span>CF</span></div>
               <div className={styles.presetRow} aria-label="初期CFのプリセット">
                 {amountPresets.map((preset) => <button key={preset} className={amount === preset ? styles.presetActive : styles.presetButton} type="button" onClick={() => setAmount(preset)}>{preset.toLocaleString()}</button>)}
               </div>
+              <p className={styles.helper}>同じ端末からの登録は1回だけです。別の参加者は同じQRを使えます。</p>
             </div>
-            <button className={styles.primaryButton} onClick={() => void issueCode()} disabled={loading}>{loading ? <><span className={styles.spinner} />発行しています…</> : <>QRコードを発行する <span>→</span></>}</button>
-            <p className={styles.helper}>同じ端末からの登録は1回だけです。別の参加者は同じQRを使えます。</p>
           </section>
 
         </div>
