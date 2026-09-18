@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import { getSupabaseClient } from "@/lib/supabase";
 import styles from "./page.module.css";
 
-type Code = { id: string; code: string; initial_amount: number; created_at: string; used_at: string | null; qr_url?: string };
-type IssuedCode = { code: string; initial_amount: number; qr_url: string };
+type Code = { id: string; code: string; initial_amount: number; created_at: string; used_at: string | null; reusable?: boolean; qr_url?: string };
+type IssuedCode = { code: string; initial_amount: number; qr_url: string; reused?: boolean };
 type CodeFilter = "all" | "unused" | "used";
 type Attendee = { id: string; display_name: string; active: boolean; balance: number; created_at: string; last_seen_at: string };
 
@@ -57,7 +57,16 @@ export default function OperatorPage() {
     const response = await fetch("/api/operator/codes", { cache: "no-store", headers });
     if (response.status === 401) { router.replace("/operator/login"); return; }
     const body = await response.json().catch(() => ({})) as { data?: Code[]; error?: string };
-    setCodes(body.data ?? []);
+    const nextCodes = body.data ?? [];
+    setCodes(nextCodes);
+    const sharedCode = nextCodes.find((item) => item.reusable);
+    if (sharedCode) {
+      setIssued({
+        code: sharedCode.code,
+        initial_amount: sharedCode.initial_amount,
+        qr_url: sharedCode.qr_url ?? `${window.location.origin}/guest?code=${encodeURIComponent(sharedCode.code)}`,
+      });
+    }
     if (!response.ok) setMessage({ type: "error", text: body.error ?? "発行履歴を読み込めませんでした" });
     setLoadingCodes(false);
   };
@@ -147,7 +156,7 @@ export default function OperatorPage() {
     else {
       setIssued(body);
       const displayOpened = publishDisplay(body, displayWindow);
-      setMessage({ type: displayOpened ? "success" : "error", text: displayOpened ? "QRコードを発行しました。表示画面も更新しました" : "QRコードは発行しましたが、表示画面を開けませんでした。ポップアップを許可してください" });
+      setMessage({ type: displayOpened ? "success" : "error", text: displayOpened ? (body.reused ? "共通受付QRを再表示しました" : "共通受付QRを発行しました。表示画面も更新しました") : "QR表示画面を開けませんでした。ブラウザのポップアップを許可してください" });
       await loadCodes();
     }
     setLoading(false);
@@ -243,7 +252,7 @@ export default function OperatorPage() {
           <div>
             <p className={styles.eyebrow}>キャンパスフェスティバル横浜キャンパス</p>
             <h1>運営</h1>
-            <p className={styles.heroCopy}>参加受付用のQRを発行できます。</p>
+            <p className={styles.heroCopy}>参加者全員で使える共通受付QRを表示できます。</p>
           </div>
           <div className={styles.heroLinks}>
             <Link href="/operator/scan">QRを読み取る</Link>
@@ -270,7 +279,7 @@ export default function OperatorPage() {
         <div className={styles.contentGrid}>
           <section className={`${styles.card} ${styles.issueCard}`}>
             <div className={styles.cardHeader}>
-              <div><h2>参加受付QRを発行</h2><p>参加者に読み取ってもらうQRを作成します。</p></div>
+              <div><h2>共通受付QRを発行</h2><p>同じQRを何度でも使って、参加者ごとにアカウントを作成できます。</p></div>
             </div>
             <div className={styles.formField}>
               <label htmlFor="initial-amount">初期CF</label>
@@ -280,7 +289,7 @@ export default function OperatorPage() {
               </div>
             </div>
             <button className={styles.primaryButton} onClick={() => void issueCode()} disabled={loading}>{loading ? <><span className={styles.spinner} />発行しています…</> : <>QRコードを発行する <span>→</span></>}</button>
-            <p className={styles.helper}>発行したQRを参加者に読み取ってもらってください。</p>
+            <p className={styles.helper}>一度発行したQRは、次回以降も同じものを表示して使えます。</p>
           </section>
 
         </div>

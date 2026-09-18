@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   const admin = getSupabaseServiceClient() as any;
   const { data, error } = await admin
     .from("canfes_access_codes")
-    .select("id, code, initial_amount, created_at, used_at")
+    .select("id, code, initial_amount, created_at, used_at, reusable")
     .eq("created_by", user.id)
     .order("created_at", { ascending: false })
     .limit(50);
@@ -52,6 +52,26 @@ export async function POST(request: Request) {
     ? Math.max(0, Math.min(100000, Math.floor(Number(body.initialAmount))))
     : 300;
   const admin = getSupabaseServiceClient() as any;
+  const { data: existing, error: existingError } = await admin
+    .from("canfes_access_codes")
+    .select("id, code, initial_amount, created_at, used_at, reusable")
+    .eq("created_by", user.id)
+    .eq("reusable", true)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (existingError) return NextResponse.json({ error: formatDatabaseError(existingError) }, { status: 500 });
+  if (existing) {
+    const appUrl = getAppUrl(request);
+    return NextResponse.json({
+      code: existing.code,
+      initial_amount: existing.initial_amount,
+      created_at: existing.created_at,
+      qr_url: `${appUrl}/guest?code=${encodeURIComponent(existing.code)}`,
+      reused: true,
+    });
+  }
+
   let data: any = null;
   let error: any = null;
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -59,7 +79,8 @@ export async function POST(request: Request) {
       code: createCode(),
       initial_amount: initialAmount,
       created_by: user.id,
-    }).select("id, code, initial_amount, created_at, used_at").single();
+      reusable: true,
+    }).select("id, code, initial_amount, created_at, used_at, reusable").single();
     data = result.data;
     error = result.error;
     if (!error) break;
@@ -72,5 +93,6 @@ export async function POST(request: Request) {
     initial_amount: data.initial_amount,
     created_at: data.created_at,
     qr_url: `${appUrl}/guest?code=${encodeURIComponent(data.code)}`,
+    reused: false,
   }, { status: 201 });
 }

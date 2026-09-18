@@ -10,7 +10,8 @@ create table if not exists public.canfes_access_codes (
   created_by uuid not null references auth.users(id) on delete restrict,
   created_at timestamptz not null default now(),
   used_at timestamptz,
-  used_by uuid
+  used_by uuid,
+  reusable boolean not null default false
 );
 
 create table if not exists public.canfes_accounts (
@@ -167,7 +168,7 @@ declare
 begin
   select * into v_code
   from public.canfes_access_codes
-  where code = upper(trim(p_code)) and used_at is null
+  where code = upper(trim(p_code)) and (used_at is null or reusable)
   for update;
 
   if not found then
@@ -183,9 +184,11 @@ begin
   insert into public.canfes_balances (account_id, amount)
   values (v_account_id, v_code.initial_amount);
 
-  update public.canfes_access_codes
-  set used_at = now(), used_by = v_account_id
-  where id = v_code.id;
+  if not v_code.reusable then
+    update public.canfes_access_codes
+    set used_at = now(), used_by = v_account_id
+    where id = v_code.id;
+  end if;
 
   return query select v_account_id, v_display_name, v_code.initial_amount;
 end;
