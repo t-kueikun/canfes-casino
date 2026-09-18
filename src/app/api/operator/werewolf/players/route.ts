@@ -35,3 +35,31 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "プレイヤーを追加できませんでした" }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  const client = await getSupabaseRouteClient(request);
+  const { user } = await resolveRouteAuth(request, client);
+  if (!user) return NextResponse.json({ error: "運営ログインが必要です" }, { status: 401 });
+
+  const body = await request.json().catch(() => ({})) as { id?: string };
+  const playerId = typeof body.id === "string" ? body.id.trim() : "";
+  if (!/^[0-9a-f-]{36}$/i.test(playerId)) {
+    return NextResponse.json({ error: "削除するプレイヤーを選択してください" }, { status: 400 });
+  }
+
+  try {
+    const admin = getSupabaseServiceClient() as any;
+    const { data, error } = await admin
+      .from("canfes_werewolf_players")
+      .update({ active: false })
+      .eq("id", playerId)
+      .eq("active", true)
+      .select("id, display_name")
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) return NextResponse.json({ error: "プレイヤーが見つかりません" }, { status: 404 });
+    return NextResponse.json({ player: data });
+  } catch {
+    return NextResponse.json({ error: "プレイヤーを削除できませんでした" }, { status: 500 });
+  }
+}

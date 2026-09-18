@@ -69,7 +69,10 @@
 .addPlayerRow button { border-color: #007da9; background: #007da9; color: #fff; }
 .addPlayerRow button:disabled { cursor: wait; opacity: .55; }
 .playerRoster { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.playerRoster span { padding: 8px 11px; border-radius: 999px; background: #edf6f9; color: #315d70; font-size: 12px; font-weight: 750; }
+.playerChip { display: inline-flex; align-items: center; gap: 7px; padding: 5px 7px 5px 11px; border-radius: 999px; background: #edf6f9; color: #315d70; font-size: 12px; font-weight: 750; }
+.playerChip button { display: grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #78909b; font: inherit; font-size: 17px; line-height: 1; cursor: pointer; }
+.playerChip button:hover:not(:disabled) { background: #d8edf3; color: #b3473c; }
+.playerChip button:disabled { cursor: wait; opacity: .45; }
 .audienceCard { display: grid; justify-items: center; text-align: center; }
 .audienceCard > div:first-child { width: 100%; text-align: left; }
 .audienceQrFrame { display: grid; place-items: center; width: min(100%, 252px); aspect-ratio: 1; margin-top: 18px; padding: 14px; border: 1px solid #e7eef2; border-radius: 15px; background: #fff; }

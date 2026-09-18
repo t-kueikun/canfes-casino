@@ -22,6 +22,7 @@ export default function OperatorWerewolfPage() {
   const [message, setMessage] = useState<string | null>(null);
   const [playerName, setPlayerName] = useState("");
   const [addingPlayer, setAddingPlayer] = useState(false);
+  const [deletingPlayerId, setDeletingPlayerId] = useState<string | null>(null);
   const [audienceUrl, setAudienceUrl] = useState("");
   const [copiedAudienceUrl, setCopiedAudienceUrl] = useState(false);
 
@@ -113,6 +114,29 @@ export default function OperatorWerewolfPage() {
     }
   };
 
+  const deletePlayer = async (player: Player) => {
+    if (deletingPlayerId || !window.confirm(`${player.display_name}さんを人狼プレイヤーから削除しますか？`)) return;
+    setDeletingPlayerId(player.id);
+    setError(null);
+    setMessage(null);
+    try {
+      const response = await fetch("/api/operator/werewolf/players", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+        body: JSON.stringify({ id: player.id }),
+      });
+      if (response.status === 401) { router.replace(`/operator/login?next=${encodeURIComponent("/operator/werewolf")}`); return; }
+      const body = await response.json().catch(() => ({})) as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "プレイヤーを削除できませんでした");
+      setMessage(`${player.display_name}さんを削除しました`);
+      await load();
+    } catch (deleteError) {
+      setError(deleteError instanceof Error ? deleteError.message : "プレイヤーを削除できませんでした");
+    } finally {
+      setDeletingPlayerId(null);
+    }
+  };
+
   const sortedPlayers = [...(data?.players ?? [])].sort((a, b) => b.votes - a.votes || a.display_name.localeCompare(b.display_name, "ja"));
   const isDay = data?.state.phase === "day";
 
@@ -137,7 +161,7 @@ export default function OperatorWerewolfPage() {
             <label htmlFor="werewolf-player-name">プレイヤー名</label>
             <div className={styles.addPlayerRow}><input id="werewolf-player-name" value={playerName} onChange={(event) => setPlayerName(event.target.value)} maxLength={40} placeholder="例：プレイヤーA" autoComplete="off" required /><button type="submit" disabled={addingPlayer || !playerName.trim()}>{addingPlayer ? "追加中…" : "プレイヤーを追加"}</button></div>
           </form>
-          {data?.players.length ? <div className={styles.playerRoster} aria-label="登録済みプレイヤー">{data.players.map((player) => <span key={player.id}>{player.display_name}</span>)}</div> : <p className={styles.stateText}>まだプレイヤーがいません。名前を入力して追加してください。</p>}
+          {data?.players.length ? <div className={styles.playerRoster} aria-label="登録済みプレイヤー">{data.players.map((player) => <span className={styles.playerChip} key={player.id}><strong>{player.display_name}</strong><button type="button" onClick={() => void deletePlayer(player)} disabled={deletingPlayerId !== null} aria-label={`${player.display_name}さんを削除`}>×</button></span>)}</div> : <p className={styles.stateText}>まだプレイヤーがいません。名前を入力して追加してください。</p>}
         </section>
 
         <section className={styles.resultsCard} aria-labelledby="results-title"><div className={styles.resultsHeader}><div><span className={styles.cardKicker}>LIVE RESULTS</span><h2 id="results-title">観客投票</h2></div><strong className={styles.totalVotes}>{data?.totalVotes ?? 0}<small>票</small></strong></div>{loading ? <p className={styles.stateText}>集計を読み込んでいます…</p> : sortedPlayers.length === 0 ? <p className={styles.stateText}>人狼プレイヤーがまだ登録されていません。</p> : <div className={styles.resultList}>{sortedPlayers.map((player) => <div className={styles.resultRow} key={player.id}><div className={styles.resultIdentity}><span className={styles.rank}>{player.votes > 0 ? sortedPlayers.findIndex((item) => item.votes === player.votes) + 1 : "—"}</span><strong>{player.display_name}</strong></div><div className={styles.barArea}><span className={styles.bar}><i style={{ width: `${data && data.totalVotes > 0 ? Math.round((player.votes / data.totalVotes) * 100) : 0}%` }} /></span><b>{player.votes}</b></div></div>)}</div>}</section>
