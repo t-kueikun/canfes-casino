@@ -252,7 +252,7 @@ export default function OperatorPage() {
           <div>
             <p className={styles.eyebrow}>キャンパスフェスティバル横浜キャンパス</p>
             <h1>運営</h1>
-            <p className={styles.heroCopy}>参加者全員で使える共通受付QRを表示できます。</p>
+            <p className={styles.heroCopy}>参加者全員で使える共通受付QRを表示できます（1端末につき1回）。</p>
           </div>
           <div className={styles.heroLinks}>
             <Link href="/operator/scan">QRを読み取る</Link>
@@ -279,7 +279,7 @@ export default function OperatorPage() {
         <div className={styles.contentGrid}>
           <section className={`${styles.card} ${styles.issueCard}`}>
             <div className={styles.cardHeader}>
-              <div><h2>共通受付QRを発行</h2><p>同じQRを何度でも使って、参加者ごとにアカウントを作成できます。</p></div>
+              <div><h2>共通受付QRを発行</h2><p>同じQRを会場に掲示し、参加者ごとに1回だけアカウントを作成できます。</p></div>
             </div>
             <div className={styles.formField}>
               <label htmlFor="initial-amount">初期CF</label>
@@ -289,7 +289,7 @@ export default function OperatorPage() {
               </div>
             </div>
             <button className={styles.primaryButton} onClick={() => void issueCode()} disabled={loading}>{loading ? <><span className={styles.spinner} />発行しています…</> : <>QRコードを発行する <span>→</span></>}</button>
-            <p className={styles.helper}>一度発行したQRは、次回以降も同じものを表示して使えます。</p>
+            <p className={styles.helper}>同じ端末からの登録は1回だけです。別の参加者は同じQRを使えます。</p>
           </section>
 
         </div>

@@ -67,7 +67,7 @@ export default function OperatorQrDisplayPage() {
           <p className={styles.lead}>スマートフォンのカメラで読み取ってください</p>
           <div className={styles.qrCard}><QRCodeCanvas value={data.url} size={420} includeMargin /></div>
           <div className={styles.meta}><span>初期CF</span><strong>{data.amount.toLocaleString()} CF</strong><code>{data.code}</code></div>
-          <p className={styles.note}>QRを読み取ると、参加者用アカウントが自動で作成されます</p>
+          <p className={styles.note}>QRを読み取ると、参加者用アカウントが作成されます。同じ端末からの登録は1回だけです。</p>
         </section>
         <footer className={styles.footer}>爆裂カジノ ・ キャンパスフェスティバル横浜キャンパス</footer>
       </div>
