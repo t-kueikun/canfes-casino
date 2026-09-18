@@ -35,7 +35,7 @@ export default function WerewolfPage() {
 
   useEffect(() => {
     void load(true);
-    const timer = window.setInterval(() => void load(), 2000);
+    const timer = window.setInterval(() => void load(), 5000);
     return () => window.clearInterval(timer);
   }, [load]);
 
