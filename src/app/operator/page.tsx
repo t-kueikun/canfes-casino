@@ -314,7 +314,7 @@ export default function OperatorPage() {
           <summary><strong>チップ復活申請</strong><span>{revivalLoading ? "確認中…" : `${revivals.length}件`}</span></summary>
           <section className={`${styles.card} ${styles.revivalCard}`} aria-labelledby="revival-title">
             <div className={styles.attendanceHeader}>
-              <div><h2 id="revival-title">スタッフ承認待ち</h2><p>残高0の参加者が申請できます。申請から20分後に300 CFへ復活します。</p></div>
+              <div><h2 id="revival-title">スタッフ承認待ち</h2><p>参加者の申請だけでは復活しません。申請から20分後に、スタッフが許可すると300 CFへ復活します。</p></div>
               <button className={styles.refreshButton} type="button" onClick={() => void loadRevivals()} disabled={revivalLoading}>更新 ↻</button>
             </div>
             {revivalLoading ? <p className={styles.emptyState}>復活申請を読み込んでいます…</p> : revivals.length === 0 ? <p className={styles.emptyState}>現在、承認待ちの申請はありません。</p> : <div className={styles.revivalList}>
@@ -324,7 +324,7 @@ export default function OperatorPage() {
                   <div className={styles.revivalMeta}><strong>{revivalRequest.displayName}</strong><span>申請 {formatDate(revivalRequest.requestedAt)} ・ 残高 {revivalRequest.balance.toLocaleString()} CF</span></div>
                   <div className={styles.revivalActions}>
                     <span className={revivalRequest.canApprove ? styles.revivalReady : styles.revivalWaiting}>{revivalRequest.canApprove ? "承認できます" : revivalRequest.balance !== 0 ? "残高0を確認" : `あと約${minutes}分`}</span>
-                    <button type="button" className={styles.revivalApproveButton} onClick={() => void reviewRevival(revivalRequest, "approve")} disabled={!revivalRequest.canApprove || approvingRevival !== null}>{approvingRevival === revivalRequest.id ? "処理中…" : "300 CFに復活"}</button>
+                    <button type="button" className={styles.revivalApproveButton} onClick={() => void reviewRevival(revivalRequest, "approve")} disabled={!revivalRequest.canApprove || approvingRevival !== null}>{approvingRevival === revivalRequest.id ? "処理中…" : "許可して300 CFに復活"}</button>
                     <button type="button" className={styles.revivalRejectButton} onClick={() => void reviewRevival(revivalRequest, "reject")} disabled={approvingRevival !== null}>却下</button>
                   </div>
                 </div>;
