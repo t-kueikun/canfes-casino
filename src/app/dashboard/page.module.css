@@ -160,6 +160,66 @@
   gap: 1rem;
 }
 
+.revivalCard {
+  max-width: 360px;
+  margin: 1rem auto 0;
+  padding: 1.25rem;
+  border: 1px solid #f1d7a4;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fffaf0 0%, #ffffff 100%);
+  box-shadow: 0 8px 16px rgba(148, 93, 24, 0.08);
+}
+
+.revivalKicker {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: #b16f1e;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.revivalCard h2 {
+  margin: 0;
+  color: #332313;
+  font-size: 1.3rem;
+}
+
+.revivalCopy {
+  margin: 0.75rem 0 0;
+  color: #6e5a42;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.revivalStatus {
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  background: #fff1d5;
+  color: #9a5d14;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.revivalButton {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 1rem;
+  border: 0;
+  border-radius: 11px;
+  background: #b87922;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.revivalButton:hover { background: #9f6417; }
+.revivalButton:disabled { cursor: wait; opacity: 0.6; }
+
 .historyContainer {
   max-width: 420px;
   margin: 0 auto;

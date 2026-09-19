@@ -11,6 +11,7 @@ type Code = { id: string; code: string; initial_amount: number; created_at: stri
 type IssuedCode = { code: string; initial_amount: number; qr_url: string; reused?: boolean };
 type CodeFilter = "all" | "unused" | "used";
 type Attendee = { id: string; display_name: string; active: boolean; balance: number; created_at: string; last_seen_at: string };
+type RevivalRequest = { id: string; accountId: string; displayName: string; balance: number; requestedAt: string; eligibleAt: string; canApprove: boolean };
 
 const amountPresets = [100, 300, 500, 1000];
 const qrDisplayStorageKey = "canfes-qr-display-state";
@@ -35,6 +36,9 @@ export default function OperatorPage() {
   const [loadingCodes, setLoadingCodes] = useState(true);
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [attendanceLoading, setAttendanceLoading] = useState(true);
+  const [revivals, setRevivals] = useState<RevivalRequest[]>([]);
+  const [revivalLoading, setRevivalLoading] = useState(true);
+  const [approvingRevival, setApprovingRevival] = useState<string | null>(null);
   const [attendanceNotice, setAttendanceNotice] = useState<string | null>(null);
   const [newArrivalIds, setNewArrivalIds] = useState<Set<string>>(new Set());
   const [copied, setCopied] = useState(false);
@@ -108,6 +112,20 @@ export default function OperatorPage() {
     }
   }, [loadAttendance]);
 
+  const loadRevivals = useCallback(async () => {
+    try {
+      const response = await fetch("/api/operator/revivals", { cache: "no-store", headers: await authHeaders() });
+      if (response.status === 401) { router.replace("/operator/login"); return; }
+      const body = await response.json().catch(() => ({})) as { data?: RevivalRequest[]; error?: string };
+      if (!response.ok) throw new Error(body.error ?? "復活申請を読み込めませんでした");
+      setRevivals(body.data ?? []);
+    } catch (revivalError) {
+      setMessage({ type: "error", text: revivalError instanceof Error ? revivalError.message : "復活申請を読み込めませんでした" });
+    } finally {
+      setRevivalLoading(false);
+    }
+  }, [authHeaders, router]);
+
   useEffect(() => {
     if (typeof BroadcastChannel === "undefined") return;
     const channel = new BroadcastChannel("canfes-qr-display");
@@ -121,20 +139,38 @@ export default function OperatorPage() {
   useEffect(() => {
     getSupabaseClient().auth.getUser().then(({ data: { user } }) => {
       if (!user) router.replace("/operator/login");
-      else { void loadCodes(); void refreshAttendance(); }
+      else { void loadCodes(); void refreshAttendance(); void loadRevivals(); }
     });
-  }, [refreshAttendance, router]);
+  }, [loadRevivals, refreshAttendance, router]);
 
   useEffect(() => {
     let interval: number | null = null;
     getSupabaseClient().auth.getUser().then(({ data: { user } }) => {
-      if (user) interval = window.setInterval(() => void refreshAttendance(), 5000);
+      if (user) interval = window.setInterval(() => {
+        void refreshAttendance();
+        void loadRevivals();
+      }, 5000);
     });
     return () => {
       if (interval) window.clearInterval(interval);
       if (arrivalNoticeTimeoutRef.current) window.clearTimeout(arrivalNoticeTimeoutRef.current);
     };
-  }, [refreshAttendance]);
+  }, [loadRevivals, refreshAttendance]);
+
+  const reviewRevival = async (request: RevivalRequest, action: "approve" | "reject") => {
+    setApprovingRevival(request.id);
+    setMessage(null);
+    const response = await fetch("/api/operator/revivals", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...(await authHeaders()) },
+      body: JSON.stringify({ requestId: request.id, action }),
+    });
+    const body = await response.json().catch(() => ({})) as { error?: string; displayName?: string };
+    if (!response.ok) setMessage({ type: "error", text: body.error ?? "復活申請を処理できませんでした" });
+    else setMessage({ type: "success", text: action === "approve" ? `${body.displayName ?? request.displayName}さんを300 CFに復活しました` : `${request.displayName}さんの申請を却下しました` });
+    await loadRevivals();
+    setApprovingRevival(null);
+  };
 
   const issueCode = async () => {
     if (amount < 0 || amount > 100000) {
@@ -271,6 +307,29 @@ export default function OperatorPage() {
           {attendanceNotice ? <div className={styles.arrivalNotice} role="status"><span>✓</span><strong>{attendanceNotice}</strong></div> : null}
           {attendanceLoading ? <p className={styles.emptyState}>来場受付を読み込んでいます…</p> : attendees.length === 0 ? <p className={styles.emptyState}>まだ来場受付はありません。</p> : <div className={styles.attendanceList}>{attendees.slice(0, 8).map((attendee) => <div key={attendee.id} className={`${styles.attendanceItem} ${newArrivalIds.has(attendee.id) ? styles.attendanceItemNew : ""}`}><div><strong>{attendee.display_name}</strong><span>{formatDate(attendee.created_at)} に受付</span></div><div className={styles.attendanceDetails}><strong>{attendee.balance.toLocaleString()} CF</strong>{newArrivalIds.has(attendee.id) ? <span className={styles.newArrivalBadge}>新着</span> : null}</div></div>)}</div>}
           <Link className={styles.attendanceLink} href="/operator/accounts">全参加者の残高・景品状況を見る →</Link>
+          </section>
+        </details>
+
+        <details className={styles.detailsCard}>
+          <summary><strong>チップ復活申請</strong><span>{revivalLoading ? "確認中…" : `${revivals.length}件`}</span></summary>
+          <section className={`${styles.card} ${styles.revivalCard}`} aria-labelledby="revival-title">
+            <div className={styles.attendanceHeader}>
+              <div><h2 id="revival-title">スタッフ承認待ち</h2><p>残高0の参加者が申請できます。申請から20分後に300 CFへ復活します。</p></div>
+              <button className={styles.refreshButton} type="button" onClick={() => void loadRevivals()} disabled={revivalLoading}>更新 ↻</button>
+            </div>
+            {revivalLoading ? <p className={styles.emptyState}>復活申請を読み込んでいます…</p> : revivals.length === 0 ? <p className={styles.emptyState}>現在、承認待ちの申請はありません。</p> : <div className={styles.revivalList}>
+              {revivals.map((revivalRequest) => {
+                const minutes = Math.max(0, Math.ceil((new Date(revivalRequest.eligibleAt).getTime() - Date.now()) / 60000));
+                return <div key={revivalRequest.id} className={styles.revivalItem}>
+                  <div className={styles.revivalMeta}><strong>{revivalRequest.displayName}</strong><span>申請 {formatDate(revivalRequest.requestedAt)} ・ 残高 {revivalRequest.balance.toLocaleString()} CF</span></div>
+                  <div className={styles.revivalActions}>
+                    <span className={revivalRequest.canApprove ? styles.revivalReady : styles.revivalWaiting}>{revivalRequest.canApprove ? "承認できます" : revivalRequest.balance !== 0 ? "残高0を確認" : `あと約${minutes}分`}</span>
+                    <button type="button" className={styles.revivalApproveButton} onClick={() => void reviewRevival(revivalRequest, "approve")} disabled={!revivalRequest.canApprove || approvingRevival !== null}>{approvingRevival === revivalRequest.id ? "処理中…" : "300 CFに復活"}</button>
+                    <button type="button" className={styles.revivalRejectButton} onClick={() => void reviewRevival(revivalRequest, "reject")} disabled={approvingRevival !== null}>却下</button>
+                  </div>
+                </div>;
+              })}
+            </div>}
           </section>
         </details>
 
